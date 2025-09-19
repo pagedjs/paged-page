@@ -18,14 +18,39 @@ export class PagedPage extends LitElement {
 
   static styles = css`
     :host {
-      display: block;
       width: calc(var(--page-width, 210mm) + var(--bleed, 0mm));
       height: calc(var(--page-height, 297mm) + var(--bleed, 0mm));
       overflow: hidden;
       break-after: page;
       outline: 1px solid red;
       display: grid;
+      margin: auto;
+      --margin-left: 8mm;
+      --margin-right: 10mm;
+      --margin-top: 6mm;
+      --margin-bottom: 12mm;
+      display: grid;
+      grid-template-rows:
+        [bleed-top-start] var(--bleed, 5mm)
+        [bleed-top-end margin-top-start] var(--margin-top)
+        [margin-top-end page-area-start] minmax(1px, 1fr)
+        [page-area-end margin-bottom-start] var(--margin-bottom)
+        [margin-bottom-end bleed-bottom-start] var(--bleed, 5mm)
+        [bleed-bottom-end];
+      grid-template-columns:
+        [bleed-left-start] var(--bleed, 5mm)
+        [bleed-left-end margin-left-start] var(--margin-left)
+        [margin-left-end page-area-start] 1fr
+        [page-area-end margin-right-start] var(--margin-right)
+        [margin-right-end bleed-right-start] var(--bleed, 5mm)
+        [bleed-right-end];
     }
+
+    .page-area {
+      grid-column: page-area-start / page-area-end;
+      grid-row: page-area-start / page-area-end;
+    }
+
     @media screen {
       :host {
         outline: 1px solid gainsboro;
@@ -81,7 +106,7 @@ export class PagedPage extends LitElement {
   }
 
   render() {
-    return html` <slot></slot> `;
+    return html`<div class="page-area"><slot></slot></div>`;
   }
 }
 

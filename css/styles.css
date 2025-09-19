@@ -1,0 +1,24 @@
+/* *set the margin on the page using grid */
+/* /** we need to set the page size to add bleed,g */
+
+paged-page {
+  --margin-left: 8mm;
+  --margin-right: 10mm;
+  --margin-top: 6mm;
+  --margin-bottom: 12mm;
+  display: grid;
+  grid-template-rows:
+    [bleed-top-start] var(--bleed, 5mm)
+    [bleed-top-end margin-top-start] var(--margin-top)
+    [margin-top-end text-area-start] minmax(1px, 1fr)
+    [text-area-end margin-bottom-start] var(--margin-bottom)
+    [margin-bottom-end bleed-bottom-start] var(--bleed, 5mm)
+    [bleed-bottom-end];
+  grid-template-columns:
+    [bleed-left-start] var(--bleed, 5mm)
+    [bleed-left-end margin-left-start] var(--margin-left)
+    [margin-left-end text-area-start] 1fr
+    [text-area-end margin-right-start] var(--margin-right)
+    [margin-right-end bleed-right-start] var(--bleed, 5mm)
+    [bleed-right-end];
+}

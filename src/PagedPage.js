@@ -5,6 +5,7 @@ import { LitElement, html, css } from "lit";
  *  1. background should be in a preview/component component ?
  *  2. preview would put the page in a grid and therefore paged-page will not need any margin
  *  3. insert style with lower priority?
+ *  4. use has: to define the grid subdivision with css
  *
  **/
 
@@ -51,6 +52,29 @@ export class PagedPage extends LitElement {
       grid-row: page-area-start / page-area-end;
     }
 
+    .margin-bottom {
+      grid-row: margin-bottom;
+      grid-column: page-area;
+      display: flex;
+      [name="mbl"],
+      [name="mbc"],
+      [name="mbr"],
+      .empty {
+        flex: 1 0 33%;
+      }
+
+      [name="mbr"] {
+        text-align: right;
+      }
+      [name="mbc"] {
+        text-align: center;
+      }
+    }
+
+    :is([name="mbl"], [name="mbc"], [name="mbr"])::slotted(*) {
+      flex: 1 0 33%;
+    }
+
     @media screen {
       :host {
         outline: 1px solid gainsboro;
@@ -65,7 +89,6 @@ export class PagedPage extends LitElement {
     this.index = null;
     this.width = "210mm";
     this.height = "297mm";
-
     this.name = "";
   }
 
@@ -106,9 +129,22 @@ export class PagedPage extends LitElement {
   }
 
   render() {
-    return html`<div class="page-area"><slot></slot></div>`;
+    return html`
+      <div class="page-area"><slot></slot></div>
+      <div class="margin-bottom">
+        <!--  mbl mbc mbr  -->
+        <slot name="mbl">
+          <div class="empty"></div>
+        </slot>
+        <slot name="mbc">
+          <div class="empty"></div>
+        </slot>
+        <slot name="mbr">
+          <div class="empty"></div>
+        </slot>
+      </div>
+    `;
   }
 }
 
 customElements.define("paged-page", PagedPage);
-

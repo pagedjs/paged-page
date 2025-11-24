@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paged Horizontal Margin Example</title>
+  <script type="module" src="/lib/PagedPreview.js"></script>
+  <style>
+    paged-horizontal-margin-autosize-simplified {
+      outline: 1px dotted red;
+      height: 10mm;
+      margin: 10mm 0;
+    }
+
+    paged-horizontal-margin-autosize-simplified::part(left) {
+      background: honeydew;
+    }
+
+    paged-horizontal-margin-autosize-simplified::part(center) {
+      background: lavender;
+    }
+
+    paged-horizontal-margin-autosize-simplified::part(right) {
+      background: papayawhip;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>
+    <code>page-horizontal-margin-autosize-simplified</code>
+  </h1>
+  <h2>
+    Auto sized margin boxes
+  </h2>
+  <p>
+    Content is inserted using slots. This allows to use (a simplified version of)
+    the <a href="https://github.com/pagedjs/pagedjs/blob/ba1e3c5e4b8d4404b577fbdb0f2b9356a67107e6/src/modules/paged-media/atpage.js#L1771-L1907">existing sizing algorithm</a>.
+
+    The <code>paged-margin-box</code> is removed, and the code to derive column widths
+    is externalised.  
+  </p>
+
+  <h3>Even content</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="left">left</span>
+    <span slot="center">center</span>
+    <span slot="right">right</span>
+  </paged-horizontal-margin-autosize-simplified>
+  <h3>Left & center uneven</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero. Phasellus pharetra ante a purus ornare, eget facilisis sem ultricies.
+    </span>
+    <span slot="center">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize-simplified>
+  <h3>Left & right uneven content</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero. Phasellus pharetra ante a purus ornare, eget facilisis sem ultricies.
+    </span>
+    <span slot="right">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize-simplified>
+  <h3>Left & right even content</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+    <span slot="right">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize-simplified>
+  <h3>Left</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero. Phasellus pharetra ante a purus ornare, eget facilisis sem ultricies.
+    </span>
+  </paged-horizontal-margin-autosize-simplified>
+  <h3>Center</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="center">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize-simplified>
+  <h3>Right</h3>
+  <paged-horizontal-margin-autosize-simplified>
+    <span slot="right">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize-simplified>
+  <script>
+
+    /**
+     * Measure intrinsic width of content in the slot.
+     * 
+     * @param {Array} nodes Nodes to measure
+     * @returns int
+     */
+    function _measureIntrinsicContentWidth (nodes) {
+      return Array.from(nodes).reduce((width, node) => {
+        node.style.whiteSpace = 'nowrap';
+        const nodeWidth = node.offsetWidth;
+        node.style.removeProperty('white-space');
+        return width + nodeWidth;
+      }, 0);
+    }
+
+    Array.from(document.querySelectorAll('paged-horizontal-margin-autosize-simplified')).forEach((marginBox) => {
+      /**
+       * Simplified reimplementation of the sizing algorithm.
+       * Does, at the moment not consider whether the margin boxes have inherent styling instructions.
+       */
+
+      // Find slotted content per box
+      const contentNodesLeft = marginBox.querySelectorAll('[slot="left"]');
+      const contentNodesCenter = marginBox.querySelectorAll('[slot="center"]');
+      const contentNodesRight = marginBox.querySelectorAll('[slot="right"]');
+
+      // Measure instrinsic size
+      const contentWidthLeft = this._measureIntrinsicContentWidth(contentNodesLeft);
+      const contentWidthCenter = this._measureIntrinsicContentWidth(contentNodesCenter);
+      const contentWidthRight = this._measureIntrinsicContentWidth(contentNodesRight);
+
+      let gridTemplateColumnsString = '';
+
+      // Decide on proportions of the grid column.
+      // Based on which boxes are filled. And then their 'inherent width'
+      // found by not allowing whitespace and then measuring the size.
+      if (contentNodesCenter.length) {
+        if (contentNodesLeft.length == 0 && contentNodesRight.length == 0) {
+          gridTemplateColumnsString = '0 1fr 0';
+        }
+        else {
+          if (contentNodesLeft.length) {
+            if (contentNodesRight.length) {
+              const outerwidths = contentWidthLeft + contentWidthCenter + contentWidthRight;
+              const newcenterWidth = contentWidthCenter * 100 / outerwidths;
+              if (newcenterWidth > 40) {
+                gridTemplateColumnsString = "minmax(16.66%, 1fr) minmax(33%, " + newcenterWidth + "%) minmax(16.66%, 1fr)";
+              } else {
+                gridTemplateColumnsString = "repeat(3, 1fr)";
+              }
+            }
+            else {
+              let outerwidths = contentWidthLeft + contentWidthCenter;
+              let newcenterWidth = contentWidthCenter * 100 / outerwidths;
+              gridTemplateColumnsString = "minmax(16.66%, 1fr) minmax(33%, " + newcenterWidth + "%) minmax(16.66%, 1fr)";
+            }
+          }
+          else {
+            const outerwidths = contentWidthRight + contentWidthCenter;
+            const newcenterWidth = contentWidthCenter * 100 / outerwidths;
+            gridTemplateColumnsString = "minmax(16.66%, 1fr) minmax(33%, " + newcenterWidth + "%) minmax(16.66%, 1fr)";
+          }
+        }
+      }
+      else if (contentNodesLeft.length) {
+        if (contentNodesRight.length) {
+          const outerwidths = contentWidthLeft + contentWidthRight;
+          const newLeftWidth = contentWidthLeft * 100 / outerwidths;
+          gridTemplateColumnsString = "minmax(16.66%, " + newLeftWidth + "%) 0 1fr";							
+        }
+        else {
+          gridTemplateColumnsString = '1fr 0 0';
+        }
+      }
+      else if (contentNodesRight.length) {
+        gridTemplateColumnsString = '0 0 1fr'
+      }
+  
+      marginBox.style.gridTemplateColumns = gridTemplateColumnsString;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paged Horizontal Margin Example</title>
+  <script type="module" src="/lib/PagedPreview.js"></script>
+  <style>
+    body style {
+      display: block;
+      white-space: pre;
+      font-family: monospace;
+      max-width: 80ch;
+      background-color: rgb(243, 243, 243);
+      outline: 1px dotted grey;
+    }
+    paged-horizontal-margin-through-pseudo {
+      outline: 1px dotted red;
+      height: 10mm;
+        margin: 10mm 0;
+    }
+
+    paged-horizontal-margin-through-pseudo[side="bottom"] {
+      height: 15mm;
+    }
+
+    paged-horizontal-margin-through-pseudo::part(left) {
+      background: honeydew;
+    }
+
+    paged-horizontal-margin-through-pseudo::part(center) {
+      background: lavender;
+    }
+
+    paged-horizontal-margin-through-pseudo::part(right) {
+      background: papayawhip;
+    }
+
+    paged-horizontal-margin-through-pseudo[side="bottom"]::part(right)::before {
+      content: "";
+    }
+
+  </style>
+</head>
+<body>
+  <h1><code>page-horizontal-margin-through-pseudo</code></h1>
+  <h2>Margin boxes</h2>
+  <p>
+    Content is inserted with CSS, using the <code>::part()</code> & <code>::before</code> pseudo-selectors.
+  </p>
+  <p>
+    <code>paged-horizontal-margin-through-pseudo</code> exposes four parts:
+  </p>
+  <ol>
+    <li><code>left</code> the left marginbox</li>
+    <li><code>center</code> the center marginbox</li>
+    <li><code>right</code> the right marginbox</li>
+    <li><code>margin-box</code> all the marginboxes at once. Rename to all?</li>
+  </ol>
+  <style>
+    paged-horizontal-margin-through-pseudo::part(left)::before {
+      content: "Left";
+    }
+
+    paged-horizontal-margin-through-pseudo::part(center)::before {
+      content: "Center";
+    }
+
+    paged-horizontal-margin-through-pseudo::part(right)::before {
+      content: "Right";
+    }
+  </style>
+  <paged-horizontal-margin-through-pseudo side="top"></paged-horizontal-margin-through-pseudo>
+  <p>
+    The part <code>margin-box</code> allows to style all margin-boxes at once.
+  </p>
+  <style>
+    paged-horizontal-margin-through-pseudo#monospace::part(margin-box) {
+      color: blue;
+      font-family: monospace;
+    }
+  </style>
+  <paged-horizontal-margin-through-pseudo id="monospace"></paged-horizontal-margin-through-pseudo>
+  <p>
+    Though font properties inherit. So this snippet produces a similar result:
+  </p>
+  <style>
+    paged-horizontal-margin-through-pseudo#monospace-alt {
+      color: blue;
+      font-family: monospace;
+    }
+  </style>
+  <paged-horizontal-margin-through-pseudo id="monospace-alt"></paged-horizontal-margin-through-pseudo>
+  <h3>
+    Sizing through CSS
+  </h3>
+  <p>
+    Marginboxes can be sized through CSS:
+  </p>
+  <style>
+    paged-horizontal-margin-through-pseudo[side="bottom"] {
+      grid-template-columns: 16.3% minmax(33.3%, 1fr) 16.3%;
+    }
+  </style>
+  <paged-horizontal-margin-through-pseudo side="bottom"></paged-horizontal-margin-through-pseudo>
+</body>
+</html>

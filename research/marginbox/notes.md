@@ -198,6 +198,9 @@ target sides?
 
 
 
+- Don't see a way to attach part names to slots.
+- margin-box-group or margin-box-side?
 
+- It works to attach 'part' to a slot. As long as it's on the top level. The 'downside' is that it is then on the slot. Some kind of in between element which has `display: contents`. Changing the display mode makes it break.
 
-
+- The part and the margin-box are not the same. The margin-box is a descendant of the div with the partname.

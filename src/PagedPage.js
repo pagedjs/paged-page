@@ -56,6 +56,7 @@ export class PagedPage extends LitElement {
       grid-row: margin-bottom;
       grid-column: page-area;
       display: flex;
+      
       [name="mbl"],
       [name="mbc"],
       [name="mbr"],
@@ -102,11 +103,10 @@ export class PagedPage extends LitElement {
         padding: 0;
       }
 
-/*
-* 
-* cant really use variable for that, because the variables are created from within, how to change the variable for that page 
-* since you can only have one root, and the variable are not part of the element, you can’t really manipulate that.
-*/
+      /*
+       * cant really use variable for that, because the variables are created from within, how to change the variable for that page 
+       * since you can only have one root, and the variable are not part of the element, you can’t really manipulate that.
+       */
       @page ${this.name} {
         margin: 0;
         size: calc(${this.width} + var(--bleed, 0mm)) calc(${this.height} + var(--bleed, 0mm));
@@ -131,7 +131,7 @@ export class PagedPage extends LitElement {
   render() {
     return html`
       <div class="page-area"><slot></slot></div>
-      <div class="margin-bottom">
+      <div class="margin-bottom" part="margin-bottom" >
         <!--  mbl mbc mbr  -->
         <slot name="mbl">
           <div class="empty"></div>

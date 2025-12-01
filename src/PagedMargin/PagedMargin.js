@@ -22,6 +22,11 @@ import { LitElement, html, css } from "lit";
  * slotchange event exists but only fires when nodes are added or removed.
  */
 
+
+/**
+ * Essentially a no-op wrapper.
+ * Should make it easier to style of select with javascript.
+ */
 export class PagedMarginContent extends LitElement {
   constructor() {
     super();
@@ -32,9 +37,10 @@ export class PagedMarginContent extends LitElement {
   }
 }
 
+
 /**
- * Essentially a no-op wrapper.
- * But makes it easier to style, but mostly select the box in javascript.
+ * No-op wrapper. Makes the code a little more legible?
+ * And easier to write the selector in the component.
  */
 export class PagedMarginBox extends LitElement {
   constructor() {

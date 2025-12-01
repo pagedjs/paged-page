@@ -47,99 +47,6 @@ export class PagedMarginBox extends LitElement {
 }
 
 
-export class PagedMarginGroupHorizontal extends LitElement {
-  constructor() {
-    super();
-  }
-
-  static styles = css`
-  :host {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  paged-margin-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-  }
-
-  #center {
-    text-align: center;
-    justify-content: center;
-  }
-
-  #right {
-    text-align: right;
-    justify-content: end;
-  }
-  `
-
-  render () {
-    return html`
-    <paged-margin-box part="left margin-box" id="left">
-      <slot name="left"></slot>
-    </paged-margin-box>
-    <paged-margin-box part="center margin-box" id="center">
-      <slot name="center"></slot>
-    </paged-margin-box>
-    <paged-margin-box part="right margin-box" id="right">
-      <slot name="right"></slot>
-    </paged-margin-box>
-    `;
-  }
-}
-
-
-export class PagedMarginGroupVertical extends LitElement {
-  static properties = {
-    side: { type: String}
-  };
-
-  constructor() {
-    super();
-  }
-
-  static styles = css`
-  :host {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-  }
-
-  paged-margin-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #top {
-    align-items: start;
-  }
-
-  #bottom {
-    align-items: end;
-  }
-  `
-
-  render () {
-    return html`
-    <paged-margin-box part="top margin-box" id="top">
-      <slot name="top"></slot>
-    </paged-margin-box>
-    <paged-margin-box part="middle margin-box" id="middle">
-      <slot name="middle"></slot>
-    </paged-margin-box>
-    <paged-margin-box part="bottom margin-box" id="bottom">
-      <slot name="bottom"></slot>
-    </paged-margin-box>
-    `;
-  }
-}
-
-
 export class PagedMargin extends LitElement {
   constructor () {
     super();
@@ -169,15 +76,8 @@ export class PagedMargin extends LitElement {
         "bottom-left-corner bottom bottom-right-corner";
     }
 
-    paged-margin-box {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     #top-left-corner { grid-area: top-left-corner; }
-    #top { grid-area: top; }
+    #top { grid-area: top;}
     #top-right-corner { grid-area: top-right-corner; }
 
     #right { grid-area: right; }
@@ -187,6 +87,47 @@ export class PagedMargin extends LitElement {
     #bottom-right-corner { grid-area: bottom-right-corner; }
 
     #left { grid-area: left; }
+
+    paged-margin-box {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #top,
+    #bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    #left,
+    #right {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    #top-left,
+    #bottom-left {
+      text-align: left;
+      justify-content: start;
+    }
+
+    #top-right,
+    #bottom-right {
+      text-align: right;
+      justify-content: end;
+    }
+
+    #left-top,
+    #right-top {
+      align-items: start;
+    }
+
+    #left-bottom,
+    #right-bottom {
+      align-items: end;
+    }
   `
 
   render () {
@@ -195,53 +136,61 @@ export class PagedMargin extends LitElement {
         <slot name="top-left-corner"></slot>
       </paged-margin-box>
 
-      <paged-margin-group-horizontal 
-        id="top"
-        part="margin-box-group top"
-        exportparts="margin-box, left:top-left, center:top-center, right:top-right"
-      >
-        <slot name="top-left" slot="left"></slot>
-        <slot name="top-center" slot="center"></slot>
-        <slot name="top-right" slot="right"></slot>
-      </paged-margin-group-horizontal>
+      <div id="top" part="margin-box-group top">
+        <paged-margin-box id="top-left" part="margin-box top-left">
+          <slot name="top-left"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="top-center" part="margin-box top-center">
+          <slot name="top-center"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="top-right" part="margin-box top-right">
+          <slot name="top-right"></slot>
+        </paged-margin-box>
+      </div>
 
       <paged-margin-box id="top-right-corner" part="margin-box top-right-corner">
         <slot name="top-right-corner"></slot>
       </paged-margin-box>
       
-      <paged-margin-group-vertical
-        id="left"  
-        part="margin-box-group left"
-        exportparts="margin-box, top:left-top, middle:left-middle, bottom:left-bottom"
-      >
-        <slot name="left-top" slot="top"></slot>
-        <slot name="left-middle" slot="middle"></slot>
-        <slot name="left-bottom" slot="bottom"></slot>
-      </paged-margin-group-vertical>
+      <div id="left" part="margin-box-group left">
+        <paged-margin-box id="left-top" part="margin-box left-top">
+          <slot name="left-top"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="left-middle" part="margin-box left-middle">
+          <slot name="left-middle"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="left-bottom" part="margin-box left-bottom">
+          <slot name="left-bottom"></slot>
+        </paged-margin-box>
+      </div>
 
-      <paged-margin-group-vertical
-        id="right"
-        part="margin-box-group right"
-        exportparts="margin-box, top:right-top, middle:right-middle, bottom:right-bottom"
-      >
-        <slot name="right-top" slot="top"></slot>
-        <slot name="right-middle" slot="middle"></slot>
-        <slot name="right-bottom" slot="bottom"></slot>
-      </paged-margin-group-vertical>
+      <div id="right" part="margin-box-group right">
+        <paged-margin-box id="right-top" part="margin-box right-top">
+          <slot name="right-top"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="right-middle" part="margin-box right-middle">
+          <slot name="right-middle"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="right-bottom" part="margin-box right-bottom">
+          <slot name="right-bottom"></slot>
+        </paged-margin-box>
+      </div>
       
       <paged-margin-box id="bottom-left-corner" part="margin-box bottom-left-corner">
         <slot name="bottom-left-corner"></slot>
       </paged-margin-box>
       
-      <paged-margin-group-horizontal
-        id="bottom"
-        part="margin-box-group bottom"
-        exportparts="margin-box, left:bottom-left, center:bottom-center, right:bottom-right"
-      >
-        <slot name="bottom-left" slot="left"></slot>
-        <slot name="bottom-center" slot="center"></slot>
-        <slot name="bottom-right" slot="right"></slot>
-      </paged-margin-group-horizontal>
+      <div id="bottom" part="margin-box-group bottom">
+        <paged-margin-box id="bottom-left" part="margin-box bottom-left">
+          <slot name="bottom-left"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="bottom-center" part="margin-box bottom-center">
+          <slot name="bottom-center"></slot>
+        </paged-margin-box>
+        <paged-margin-box id="bottom-right" part="margin-box bottom-right">
+          <slot name="bottom-right"></slot>
+        </paged-margin-box>
+      </div>
 
       <paged-margin-box id="bottom-right-corner" part="margin-box bottom-right-corner">
         <slot name="bottom-right-corner"></slot>
@@ -252,6 +201,4 @@ export class PagedMargin extends LitElement {
 
 customElements.define("paged-margin-content", PagedMarginContent);
 customElements.define("paged-margin-box", PagedMarginBox);
-customElements.define("paged-margin-group-horizontal", PagedMarginGroupHorizontal);
-customElements.define("paged-margin-group-vertical", PagedMarginGroupVertical);
 customElements.define("paged-margin", PagedMargin);

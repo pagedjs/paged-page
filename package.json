@@ -1,8 +1,8 @@
 {
-  "name": "pagedideas",
-  "version": "1.0.0",
-  "description": "A Pagedjs project using Lit for web components.",
-  "main": "PagedPreview.js",
+  "name": "paged-page",
+  "version": "0.0.1b",
+  "description": "paged-page is a webcomponent that shows on screen a paginated preview of the HTML inside of it",
+  "main": "paged-page",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
@@ -14,7 +14,7 @@
     "lit": "^3.1.0",
     "pagedjs": "^0.4.3"
   },
-  "author": "",
+  "author": "julientaq, Gijs de Heij, Fred Chasen",
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",

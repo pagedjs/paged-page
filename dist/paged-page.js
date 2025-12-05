@@ -106,24 +106,14 @@ class PagedPage extends i$1 {
    * print behavior, and preview appearance.
    */
   static styles = i$4`
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    *,
-    * * {
-      box-sizing: border-box;
-    }
-
     :host {
       width: calc(var(--page-width, 210mm) + var(--bleed, 0mm));
       height: calc(var(--page-height, 297mm) + var(--bleed, 0mm));
       overflow: hidden;
       break-after: page;
-      background: orange;
+      outline: 1px solid red;
       display: grid;
-      margin: 0;
-      padding: 0;
+      margin: auto;
       --margin-left: 8mm;
       --margin-right: 10mm;
       --margin-top: 6mm;
@@ -153,8 +143,8 @@ class PagedPage extends i$1 {
 
     @media screen {
       :host {
-        // outline: 1px solid gainsboro;
-        // background: white;
+        outline: 1px solid gainsboro;
+        background: white;
         margin: 2rem auto;
       }
     }
@@ -188,34 +178,6 @@ class PagedPage extends i$1 {
 
     // Inject the @page rules
     this.#injectPageStyles();
-
-    // Inject the  default printing rule
-    this.#injectGlobalPrintStyles();
-  }
-
-  static globalPrintStylesApplied = false;
-
-  /**
-   * Injects global @media print rules into the document.
-   * Ensures it only runs once.
-   *
-   * @private
-   */
-  #injectGlobalPrintStyles() {
-    if (PagedPage.globalPrintStylesApplied) return;
-    PagedPage.globalPrintStylesApplied = true;
-
-    const sheet = new CSSStyleSheet();
-    sheet.replaceSync(`
-    @media print {
-      body {
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-    }
-  `);
-
-    document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
   }
 
   /**
@@ -239,8 +201,8 @@ class PagedPage extends i$1 {
       }
 
       [name="${this.name}"] {
-        --page-width: calc( ${this.width} + var(--bleed, 0mm));
-        --page-height: calc( ${this.height} + var(--bleed, 0mm));
+        --page-width: ${this.width};
+        --page-height: ${this.height};
         page: ${this.name};
       }
     `);
@@ -873,12 +835,7 @@ customElements.define("paged-margin", PagedMargin);
 // import { pagedjs } from 'pagedjs';
 
 class PagedPreview extends i$1 {
-  static styles = i$4`
-    body {
-      margin: 0;
-      padding: 0;
-    }
-  `;
+  static styles = i$4``;
 
   constructor() {
     super();

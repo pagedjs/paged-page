@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paged Margin</title>
+  <script type="module" src="/lib/PagedPreview.js"></script>
+  <style>
+    body style {
+      display: block;
+      white-space: pre;
+      font-family: monospace;
+      max-width: 80ch;
+      background-color: rgb(243, 243, 243);
+      outline: 1px dotted grey;
+    }
+
+    paged-horizontal-margin,
+    ::part(margin-box-group) {
+      outline: 1px dotted red;
+      overflow: hidden;
+    }
+
+    ::part(margin-box) {
+      text-decoration: underline;
+      color: brown;
+      outline: 1px dotted;
+    }
+
+    paged-margin-content[slot="top-left"] {
+      background: honeydew;
+    }
+
+    paged-margin-content[slot="top-center"] {
+      background: lavender;
+    }
+
+    paged-margin-content[slot="top-right"] {
+      background: papayawhip;
+    }
+
+    ::part(bottom-center) {
+      background: green;
+    }
+    
+
+    paged-margin {
+      width: 210mm;
+      height: 297mm;
+      outline: 1px dotted black;
+      margin: 15mm;
+    }
+  </style>
+</head>
+<body>
+  <paged-margin>
+    <paged-margin-content slot="top-left">Does this appear?</paged-margin-content>
+    <paged-margin-content slot="top-right">Should have</paged-margin-content>
+    <paged-margin-content slot="left-top">T</paged-margin-content>
+    <paged-margin-content slot="left-middle">6</paged-margin-content>
+    <paged-margin-content slot="top-left-corner">6</paged-margin-content>
+    <paged-margin-content slot="left-bottom">B</paged-margin-content>
+  </paged-margin>
+  <paged-margin></paged-margin>
+</body>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paged Horizontal Margin Example</title>
+  <script type="module" src="/lib/PagedPreview.js"></script>
+  <style>
+    paged-horizontal-margin-autosize {
+      outline: 1px dotted red;
+      height: 10mm;
+      margin: 10mm 0;
+    }
+
+    paged-horizontal-margin-autosize::part(left) {
+      background: honeydew;
+    }
+
+    paged-horizontal-margin-autosize::part(center) {
+      background: lavender;
+    }
+
+    paged-horizontal-margin-autosize::part(right) {
+      background: papayawhip;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>
+    <code>page-horizontal-margin-autosize</code>
+  </h1>
+  <h2>
+    Auto sized margin boxes
+  </h2>
+  <p>
+    Content is inserted using slots. This allows to use (a simplified version of)
+    the <a href="https://github.com/pagedjs/pagedjs/blob/ba1e3c5e4b8d4404b577fbdb0f2b9356a67107e6/src/modules/paged-media/atpage.js#L1771-L1907">existing sizing algorithm</a>.
+  </p>
+
+  <h3>Even content</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="left">left</span>
+    <span slot="center">center</span>
+    <span slot="right">right</span>
+  </paged-horizontal-margin-autosize>
+  <h3>Left & center uneven</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero. Phasellus pharetra ante a purus ornare, eget facilisis sem ultricies.
+    </span>
+    <span slot="center">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize>
+  <h3>Left & right uneven content</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero. Phasellus pharetra ante a purus ornare, eget facilisis sem ultricies.
+    </span>
+    <span slot="right">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize>
+  <h3>Left & right even content</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+    <span slot="right">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize>
+  <h3>Left</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="left">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero. Phasellus pharetra ante a purus ornare, eget facilisis sem ultricies.
+    </span>
+  </paged-horizontal-margin-autosize>
+  <h3>Center</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="center">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize>
+  <h3>Right</h3>
+  <paged-horizontal-margin-autosize>
+    <span slot="right">
+      Maecenas arcu massa, egestas vel est nec, mollis venenatis tortor. Ut eu finibus libero.
+    </span>
+  </paged-horizontal-margin-autosize>
+</body>
+</html>

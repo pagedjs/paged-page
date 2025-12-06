@@ -49,6 +49,105 @@ const t={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4,EVENT:5,ELEMENT:6},e
  * SPDX-License-Identifier: BSD-3-Clause
  */const e=()=>new h;class h{}const o=new WeakMap,n=e$1(class extends f{render(i){return E}update(i,[s]){const e=s!==this.G;return e&&void 0!==this.G&&this.rt(void 0),(e||this.lt!==this.ct)&&(this.G=s,this.ht=i.options?.host,this.rt(this.ct=i.element)),E}rt(t){if(this.isConnected||(t=void 0),"function"==typeof this.G){const i=this.ht??globalThis;let s=o.get(i);void 0===s&&(s=new WeakMap,o.set(i,s)),void 0!==s.get(this.G)&&this.G.call(this.ht,void 0),s.set(this.G,t),void 0!==t&&this.G.call(this.ht,t);}else this.G.value=t;}get lt(){return "function"==typeof this.G?o.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0);}reconnected(){this.rt(this.ct);}});
 
+const cross = x`<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  version="1.1"
+  id="Layer_1"
+  x="0px"
+  y="0px"
+  width="32.537px"
+  height="32.537px"
+  viewBox="0.104 0.104 32.537 32.537"
+  enable-background="new 0.104 0.104 32.537 32.537"
+  xml:space="preserve"
+>
+  <path
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3.3893"
+    stroke-miterlimit="10"
+    d="M29.931,16.373c0,7.489-6.068,13.56-13.558,13.56c-7.483,0-13.557-6.072-13.557-13.56c0-7.486,6.074-13.554,13.557-13.554C23.862,2.819,29.931,8.887,29.931,16.373z"
+  />
+  <line
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3.3893"
+    stroke-miterlimit="10"
+    x1="0.104"
+    y1="16.373"
+    x2="32.642"
+    y2="16.373"
+  />
+  <line
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3.3893"
+    stroke-miterlimit="10"
+    x1="16.373"
+    y1="0.104"
+    x2="16.373"
+    y2="32.642"
+  />
+  <path
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3.3893"
+    stroke-miterlimit="10"
+    d="M24.508,16.373c0,4.496-3.638,8.135-8.135,8.135c-4.491,0-8.135-3.638-8.135-8.135c0-4.489,3.644-8.135,8.135-8.135C20.869,8.239,24.508,11.884,24.508,16.373z"
+  />
+  <path
+    fill="none"
+    stroke="#000000"
+    stroke-width="0.6778"
+    stroke-miterlimit="10"
+    d="M29.931,16.373c0,7.489-6.068,13.56-13.558,13.56c-7.483,0-13.557-6.072-13.557-13.56c0-7.486,6.074-13.554,13.557-13.554C23.862,2.819,29.931,8.887,29.931,16.373z"
+  />
+  <line
+    fill="none"
+    stroke="#000000"
+    stroke-width="0.6778"
+    stroke-miterlimit="10"
+    x1="0.104"
+    y1="16.373"
+    x2="32.642"
+    y2="16.373"
+  />
+  <line
+    fill="none"
+    stroke="#000000"
+    stroke-width="0.6778"
+    stroke-miterlimit="10"
+    x1="16.373"
+    y1="0.104"
+    x2="16.373"
+    y2="32.642"
+  />
+  <path
+    d="M24.508,16.373c0,4.496-3.638,8.135-8.135,8.135c-4.491,0-8.135-3.638-8.135-8.135c0-4.489,3.644-8.135,8.135-8.135C20.869,8.239,24.508,11.884,24.508,16.373"
+  />
+  <line
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="0.6778"
+    stroke-miterlimit="10"
+    x1="8.239"
+    y1="16.373"
+    x2="24.508"
+    y2="16.373"
+  />
+  <line
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="0.6778"
+    stroke-miterlimit="10"
+    x1="16.373"
+    y1="8.239"
+    x2="16.373"
+    y2="24.508"
+  />
+</svg>`;
+
 /**
  * `<paged-page>` — A printable, CSS-controlled page component with support for
  * margins, bleed, full-page grid layout, and print sizing via the `@page` rule.
@@ -67,9 +166,9 @@ const t={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4,EVENT:5,ELEMENT:6},e
  *
  * @csspart page-area - The main printable content area.
  *
- * @cssprop --page-width - Internal CSS width used for layout.
- * @cssprop --page-height - Internal CSS height used for layout.
- * @cssprop --bleed - Extra print bleed size.
+ * @cssprop --paged-width - Internal CSS width used for layout.
+ * @cssprop --paged-height - Internal CSS height used for layout.
+ * @cssprop --paged-bleed - Extra print bleed size.
  * @cssprop --margin-top
  * @cssprop --margin-bottom
  * @cssprop --margin-left
@@ -99,7 +198,7 @@ class PagedPage extends i$1 {
     index: { type: Number },
     width: { type: String, reflect: true },
     height: { type: String, reflect: true },
-    bleed: { type: String, reflect: true },
+    bleed: { type: String },
     marks: { type: String },
   };
 
@@ -118,15 +217,16 @@ class PagedPage extends i$1 {
     }
 
     :host {
-      width: calc(var(--page-width, 210mm) + var(--bleed, 0mm));
-      height: calc(var(--page-height, 297mm) + var(--bleed, 0mm));
+
+     --paged-mark-color: black;
+
+      width: calc(var(--paged-width, 210mm) + var(--paged-bleed, 0mm));
+      height: calc(var(--paged-height, 297mm) + var(--paged-bleed, 0mm));
       overflow: hidden;
       break-after: page;
       display: grid;
       margin: 0;
       padding: 0;
-
-      --bleed: 5mm;
 
       /* margins are part of the geometry */
       --margin-left: 8mm;
@@ -134,28 +234,20 @@ class PagedPage extends i$1 {
       --margin-top: 6mm;
       --margin-bottom: 12mm;
 
-      /* bleed is part of the page geometry */
-      --bleed-top: 0;
-      --bleed-bottom: 0;
-      --bleed-right: 0;
-      --bleed-left: 0;
-      --bleed-inside: 0;
-      --bleed-outside: 0;
-
       grid-template-rows:
-        [bleed-top-start] var(--bleed, 0mm)
+        [bleed-top-start] var(--paged-bleed, 0mm)
         [bleed-top-end margin-top-start] var(--margin-top)
         [margin-top-end page-area-start] minmax(1px, 1fr)
         [page-area-end margin-bottom-start] var(--margin-bottom)
-        [margin-bottom-end bleed-bottom-start] var(--bleed, 0)
+        [margin-bottom-end bleed-bottom-start] var(--paged-bleed, 0mm)
         [bleed-bottom-end];
 
       grid-template-columns:
-        [bleed-left-start] var(--bleed, 0mm)
+        [bleed-left-start] var(--paged-bleed, 0mm)
         [bleed-left-end margin-left-start] var(--margin-left)
         [margin-left-end page-area-start] 1fr
         [page-area-end margin-right-start] var(--margin-right)
-        [margin-right-end bleed-right-start] var(--bleed, 0)
+        [margin-right-end bleed-right-start] var(--paged-bleed, 0mm)
         [bleed-right-end];
 
       /*  ==> dont need template area with template columns. (we should keep either one or the other
@@ -183,6 +275,70 @@ class PagedPage extends i$1 {
         margin: 2rem auto;
       }
     }
+
+    .paged-crop {
+      width: 100%;
+      heigth:100%
+      background: black;
+    }
+
+    #paged-crop-t, #paged-crop-b {
+        grid-column: 2/5;
+        grid-row: 1;
+        height: 10px;
+        border-left:2px solid var(--paged-mark-color);
+        border-right:2px solid var(--paged-mark-color);
+    }
+
+    #paged-crop-b {
+      grid-row: 5;
+      align-self: end;
+    }
+
+
+    #paged-crop-r,
+    #paged-crop-l {
+        grid-row: 2/5;
+        grid-column: 1;
+        width: 10px;
+        height:100%;
+        border-top:2px solid var(--paged-mark-color);
+        border-bottom :2px solid var(--paged-mark-color);
+    }
+
+    #paged-crop-r {
+      grid-column: 5;
+align-self: end;
+justify-self: end;
+    }
+
+    .paged-cross {
+      width: 4mm;
+      height: auto;
+      align-self: center;
+      justify-self: center;
+      svg {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    #paged-cross-t {
+      grid-column: 3;
+      grid-row: 1;
+    }
+    #paged-cross-b {
+      grid-column: 3;
+      grid-row: 5;
+    }
+    #paged-cross-l {
+      grid-column: 1;
+      grid-row: 3;
+    }
+    #paged-cross-r {
+      grid-column: 5;
+      grid-row: 3;
+    }
   `;
 
   /**
@@ -194,6 +350,8 @@ class PagedPage extends i$1 {
     this.width = "210mm";
     this.height = "297mm";
     this.name = ""; // auto-filled in connectedCallback
+    this.bleed = "0mm";
+    this.marks = "";
   }
 
   /**
@@ -216,12 +374,21 @@ class PagedPage extends i$1 {
     console.log(CSS.supports(this.width));
     if ((this.width && !CSS.supports("width", this.width)) || !this.width) {
       console.log("there is no width for the page, using 210mm");
-      this.width = "210mm"; // reflect:true ensures the attribute is written
+      this.width = "210mm";
     }
     if ((this.height && !CSS.supports("height", this.height)) || !this.height) {
       console.log("there is no height for the page, using 210mm");
-      this.height = "297mm"; // reflect:true ensures the attribute is written
+      this.height = "297mm";
     }
+    // if there is no bleed or bleed = 0, then set the bleed to 0
+    // chrome seems to have issue with calc when one of the number is 0 without any value
+    if (!this.bleed || this.bleed == "0") {
+      this.bleed = "0mm";
+    }
+
+    // cropsmark
+
+    // check if marks="crop cross"
 
     // Inject the @page rules
     this.#injectPageStyles();
@@ -271,14 +438,16 @@ class PagedPage extends i$1 {
     sheet.replaceSync(`
       @page ${this.name} {
         margin: 0;
-        size: calc(${this.width} + var(--bleed, 0mm))
-              calc(${this.height} + var(--bleed, 0mm));
+        size: calc(${this.width} + var(--paged-bleed, 0mm))
+              calc(${this.height} + var(--paged-bleed, 0mm));
       }
 
+ 
       [name="${this.name}"] {
-        --page-width: calc( ${this.width} + var(--bleed, 0mm));
-        --page-height: calc( ${this.height} + var(--bleed, 0mm));
         page: ${this.name};
+        --paged-bleed: ${this.bleed};
+        --paged-width: calc( ${this.width} + var(--paged-bleed, 0mm));
+        --paged-height: calc( ${this.height} + var(--paged-bleed, 0mm));
       }
     `);
 
@@ -291,7 +460,33 @@ class PagedPage extends i$1 {
    * @returns {import("lit").TemplateResult}
    */
   render() {
+    const crossMarks = [];
+    const cropMarks = [];
+
+    if (this.marks?.includes("cross") && this.bleed != "0mm") {
+      crossMarks.push(
+        x`<div class="paged-cross" id="paged-cross-t">${cross}</div>`,
+      );
+      crossMarks.push(
+        x`<div class="paged-cross" id="paged-cross-r">${cross}</div>`,
+      );
+      crossMarks.push(
+        x`<div class="paged-cross" id="paged-cross-b">${cross}</div>`,
+      );
+      crossMarks.push(
+        x`<div class="paged-cross" id="paged-cross-l">${cross}</div>`,
+      );
+    }
+
+    if (this.marks?.includes("crop") && this.bleed != "0mm") {
+      cropMarks.push(x`<div class="paged-crop" id="paged-crop-t"></div>`);
+      cropMarks.push(x`<div class="paged-crop" id="paged-crop-r"></div>`);
+      cropMarks.push(x`<div class="paged-crop" id="paged-crop-b"></div>`);
+      cropMarks.push(x`<div class="paged-crop" id="paged-crop-l"></div>`);
+    }
+
     return x`
+      ${crossMarks} ${cropMarks}
       <div class="page-area" part="page-area">
         <slot></slot>
       </div>
@@ -336,367 +531,6 @@ class PagedDocument extends i$1 {
 }
 
 customElements.define("paged-document", PagedDocument);
-
-class PagedMarginBoxThroughPseudo extends i$1 {
-  static properties = {
-    position: { type: String }
-  };
-
-  constructor() {
-    super();
-  }
-
-  static styles = i$4`
-  :host {
-    display: flex;
-    align-items: center;
-  }
-
-  :host::before,
-  ::slotted(*) {
-    flex-grow: 1;
-  }
-  `
-
-  render () {
-    return x`<slot></slot>`;
-  }
-}
-
-class PagedHorizontalMarginThroughPseudo extends i$1 {
-  static properties = {
-    side: { type: String}
-  };
-
-  constructor() {
-    super();
-    this.marginBoxWidths = {
-      left: 0,
-      center: 0,
-      right: 0
-    };
-  }
-
-  static styles = i$4`
-  :host {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-    
-  paged-margin-box-through-pseudo[position="center"] {
-    text-align: center;
-  }
-
-  paged-margin-box-through-pseudo[position="right"] {
-    text-align: right;
-  }
-  `
-
-  render () {
-    return x`
-    <paged-margin-box-through-pseudo part="left margin-box" position="left">
-      <slot name="left"></slot>
-    </paged-margin-box-through-pseudo>
-    <paged-margin-box-through-pseudo part="center margin-box" position="center">
-      <slot name="center"></slot>
-    </paged-margin-box-through-pseudo>
-    <paged-margin-box-through-pseudo part="right margin-box" position="right">
-      <slot name="right"></slot>
-    </paged-margin-box-through-pseudo>
-    `;
-  }
-}
-
-customElements.define("paged-margin-box-through-pseudo", PagedMarginBoxThroughPseudo);
-customElements.define("paged-horizontal-margin-through-pseudo", PagedHorizontalMarginThroughPseudo);
-
-/*
-  Example use:
-
-  <paged-horizontal-margin side="top">
-    <paged-margin-box part="left" position="left"></paged-margin-box>
-    <paged-margin-box part="center" position="center"></paged-margin-box>
-    <paged-margin-box part="right" position="right"></paged-margin-box>
-  </paged-horizontal-margin>
-*/
-
-/**
- * Expected use:
- * PagedHorizontalMarginAutosize
- *    PagedMarginBoxAutosize
- *      slot
- *    PagedMarginBoxAutosize
- *      slot
- *    PagedMarginBoxAutosize
- *      slot
- * 
- * 
- * The PagedMarginBoxAutosize measures length of its slotted content after 
- * it is added to DOM. It then emits an event `intrinsic-content-width`.
- * 
- * PagedHorizontalMarginAutosize listens for this event. When it receives it
- * it will update its internal registry and update sizes of the content
- * boxes by updating template column string.
- * 
- * At the moment changes in the element are not recognized.
- * slotchange event exists but only fires when nodes are added or removed.
- */
-
-class PagedMarginBoxAutosize extends i$1 {
-  static properties = {
-    position: { type: String }
-  };
-
-  constructor() {
-    super();
-  }
-
-  static styles = i$4`
-  :host {
-    display: flex;
-    align-items: center;
-  }
-  `
-
-  /**
-   * Measure intrinsic width of content in the slot.
-   * 
-   * @param {Array} nodes Nodes to measure
-   * @returns int
-   */
-  _measureIntrinsicContentWidth (nodes) {
-    return Array.from(nodes).reduce((width, node) => {
-      if (node.nodeName == 'SLOT') {
-        return width + this._measureIntrinsicContentWidth(Array.from(node.assignedElements()));
-      }
-      else {
-        node.style.whiteSpace = 'nowrap';
-        const nodeWidth = node.offsetWidth;
-        node.style.removeProperty('white-space');
-        return width + nodeWidth;
-      }
-    }, 0);
-  }
-
-  /**
-   * Ran after DOM is updated.
-   * Measure intrinsic content width and dispatch event.
-   */
-  updated () {
-    console.log('updated');
-    const intrinsicWidth = this._measureIntrinsicContentWidth(Array.from(this.querySelector('slot').assignedElements()));
-    this.dispatchEvent(
-      new CustomEvent('intrinsic-content-width', {detail: intrinsicWidth, bubbles: true})
-    );
-  }
-
-  render () {
-    return x`<slot></slot>`;
-  }
-}
-
-class PagedHorizontalMarginAutosize extends i$1 {
-  static properties = {
-    side: { type: String}
-  };
-
-  constructor() {
-    super();
-    this.contentWidth = {
-      left: 0,
-      center: 0,
-      right: 0
-    };
-  }
-
-  static styles = i$4`
-  :host {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-   
-  paged-margin-box-autosize[position="center"] {
-    text-align: center;
-    justify-content: center;
-  }
-
-  paged-margin-box-autosize[position="right"] {
-    text-align: right;
-    justify-content: end;
-  }
-  `
-
-  setContentWidth (marginBox, width) {
-    if (marginBox in this.contentWidth) {
-      this.contentWidth[marginBox] = width;
-    }
-  }
-
-  updateGridColumns () {
-    let gridTemplateColumnsString = '';
-
-    if (this.contentWidth.center > 0) {
-      if (this.contentWidth.left == 0 && this.contentWidth.right == 0) {
-        gridTemplateColumnsString = '0 1fr 0';
-      }
-      else {
-        if (this.contentWidth.left > 0) {
-          if (this.contentWidth.right > 0) {
-            const outerwidths = this.contentWidth.left + this.contentWidth.center + this.contentWidth.right;
-            const newcenterWidth = this.contentWidth.center * 100 / outerwidths;
-            if (newcenterWidth > 40) {
-              gridTemplateColumnsString = "minmax(16.66%, 1fr) minmax(33%, " + newcenterWidth + "%) minmax(16.66%, 1fr)";
-            } else {
-              gridTemplateColumnsString = "repeat(3, 1fr)";
-            }
-          }
-          else {
-            let outerwidths = this.contentWidth.left + this.contentWidth.center;
-            let newcenterWidth = this.contentWidth.center * 100 / outerwidths;
-            gridTemplateColumnsString = "minmax(16.66%, 1fr) minmax(33%, " + newcenterWidth + "%) minmax(16.66%, 1fr)";
-          }
-        }
-        else {
-          const outerwidths = this.contentWidth.right + this.contentWidth.center;
-          const newcenterWidth = this.contentWidth.center * 100 / outerwidths;
-          gridTemplateColumnsString = "minmax(16.66%, 1fr) minmax(33%, " + newcenterWidth + "%) minmax(16.66%, 1fr)";
-        }
-      }
-    }
-    else if (this.contentWidth.left > 0) {
-      if (this.contentWidth.right > 0) {
-        const outerwidths = this.contentWidth.left + this.contentWidth.right;
-        const newLeftWidth = this.contentWidth.left * 100 / outerwidths;
-        gridTemplateColumnsString = "minmax(16.66%, " + newLeftWidth + "%) 0 1fr";							
-      }
-      else {
-        gridTemplateColumnsString = '1fr 0 0';
-      }
-    }
-    else if (this.contentWidth.right > 0) {
-      gridTemplateColumnsString = '0 0 1fr';
-    }
- 
-    this.style.gridTemplateColumns = gridTemplateColumnsString;
-  }
-
-  firstUpdated () {
-    this.renderRoot.addEventListener('intrinsic-content-width', (e) => {
-      const target = e.target,
-            width = e.detail;
-
-      this.setContentWidth(target.getAttribute('position'), width);
-      this.updateGridColumns();
-    });
-  }
-
-  render () {
-    return x`
-    <paged-margin-box-autosize part="left margin-box" position="left">
-      <slot name="left"></slot>
-    </paged-margin-box-autosize>
-    <paged-margin-box-autosize part="center margin-box" position="center">
-      <slot name="center"></slot>
-    </paged-margin-box-autosize>
-    <paged-margin-box-autosize part="right margin-box" position="right">
-      <slot name="right"></slot>
-    </paged-margin-box-autosize>
-    `;
-  }
-}
-
-customElements.define("paged-margin-box-autosize", PagedMarginBoxAutosize);
-customElements.define("paged-horizontal-margin-autosize", PagedHorizontalMarginAutosize);
-
-/*
-  Example use:
-
-  <paged-horizontal-margin side="top">
-    <paged-margin-box part="left" position="left"></paged-margin-box>
-    <paged-margin-box part="center" position="center"></paged-margin-box>
-    <paged-margin-box part="right" position="right"></paged-margin-box>
-  </paged-horizontal-margin>
-*/
-
-/**
- * Expected use:
- * PagedHorizontalMarginAutosize
- *    PagedMarginBoxAutosize
- *      slot
- *    PagedMarginBoxAutosize
- *      slot
- *    PagedMarginBoxAutosize
- *      slot
- * 
- * 
- * The PagedMarginBoxAutosize measures length of its slotted content after 
- * it is added to DOM. It then emits an event `intrinsic-content-width`.
- * 
- * PagedHorizontalMarginAutosize listens for this event. When it receives it
- * it will update its internal registry and update sizes of the content
- * boxes by updating template column string.
- * 
- * At the moment changes in the element are not recognized.
- * slotchange event exists but only fires when nodes are added or removed.
- */
-
-class PagedHorizontalMarginAutosizeSimplified extends i$1 {
-  static properties = {
-    side: { type: String}
-  };
-
-  constructor() {
-    super();
-  }
-
-  static styles = i$4`
-  :host {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .paged_margin {
-    display: flex;
-    align-items: center;
-  }
-   
-  .paged_margin-center {
-    text-align: center;
-    justify-content: center;
-  }
-
-  .paged_margin-right {
-    text-align: right;
-    justify-content: end;
-  }
-  `
-
-  render () {
-    return x`
-    <div class="paged_margin paged_margin-left" part="left margin-box">
-      <slot name="left"></slot>
-    </div>
-    <div class="paged_margin paged_margin-center" part="center margin-box">
-      <slot name="center"></slot>
-    </div>
-    <div class="paged_margin paged_margin-right" part="right margin-box">
-      <slot name="right"></slot>
-    </div>
-    `;
-  }
-}
-
-customElements.define("paged-horizontal-margin-autosize-simplified", PagedHorizontalMarginAutosizeSimplified);
-
-/*
-  Example use:
-
-  <paged-horizontal-margin side="top">
-    <paged-margin-box part="left" position="left"></paged-margin-box>
-    <paged-margin-box part="center" position="center"></paged-margin-box>
-    <paged-margin-box part="right" position="right"></paged-margin-box>
-  </paged-horizontal-margin>
-*/
 
 /**
  * Expected use:
@@ -753,41 +587,62 @@ class PagedMargin extends i$1 {
     super();
   }
 
-  //i believe that the margin sizing should come from the parent. margin box should only car e of the children’s geometry
-
   static styles = i$4`
     :host {
+      --margin-top: 15mm;
+      --margin-right: 5mm;
+      --margin-bottom: 10mm;
+      --margin-left: 5mm;
+grid-row: margin-top-start / margin-bottom-end
+grid-column: margin-top-start / margin-bottom-end
+
+      grid-template-columns: 
+        [margin-left-start] var(--margin-left)
+        [margin-left-end page-area-start] 1fr
+        [margin-right-start page-area-end] var(--margin-right)
+        [margin-right-end];*/
+      grid-template-rows:
+        [margin-top-start] var(--margin-top)
+        [margin-top-end page-area-start] 1fr
+        [margin-bottom-start page-area-end] var(--margin-bottom)
+        [margin-bottom-end];
+      grid-template-areas:
+        "top-left-corner top top-right-corner"
+        "left page-area right"
+        "bottom-left-corner bottom bottom-right-corner";
+    }
+
       display: grid;
-      grid-template-columns: subgrid;
-      grid-template-rows: subgrid;
+      grid-template-columns: subgrid
+      grid-template-rows: subgrid
+
+
+    #top-left-corner {
+      grid-area: top-left-corner;
+    }
+    #top {
+      grid-area: top;
+    }
+    #top-right-corner {
+      grid-area: top-right-corner;
     }
 
-    #paged-margin-top-left-corner {
-      grid-area: margin-top-left-corner;
-    }
-    #paged-margin-top {
-      grid-area: margin-top;
-    }
-    #paged-margin-top-right-corner {
-      grid-area: margin-top-right-corner;
+    #right {
+      grid-area: right;
     }
 
-    #paged-margin-right {
-      grid-area: margin-right;
+    #bottom-left-corner {
+      grid-area: bottom-left-corner;
+    }
+    #bottom {
+      grid-area: bottom;
+    }
+    #bottom-right-corner {
+      grid-area: bottom-right-corner;
     }
 
-    #paged-margin-bottom-left-corner {
-      grid-area: margin-bottom-left-corner;
-    }
-    #paged-margin-bottom {
-      grid-area: margin-bottom;
-    }
-    #paged-margin-bottom-right-corner {
-      grid-area: margin-bottom-right-corner;
-    }
-
-    #paged-margin-left {
-      grid-area: margin-left;
+    #left {
+      grid-area: left;
     }
 
     paged-margin-box {
@@ -797,153 +652,114 @@ class PagedMargin extends i$1 {
       justify-content: center;
     }
 
-    #paged-margin-top,
-    #paged-margin-bottom {
+    #top,
+    #bottom {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
     }
 
-    #paged-margin-left,
-    #paged-margin-right {
+    #left,
+    #right {
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
     }
 
-    #paged-margin-top-left,
-    #paged-margin-bottom-left {
+    #top-left,
+    #bottom-left {
       text-align: left;
       justify-content: start;
     }
 
-    #paged-margin-top-right,
-    #paged-margin-bottom-right {
+    #top-right,
+    #bottom-right {
       text-align: right;
       justify-content: end;
     }
 
-    #paged-margin-left-top,
-    #paged-margin-right-top {
+    #left-top,
+    #right-top {
       align-items: start;
     }
 
-    #paged-margin-left-bottom,
-    #paged-margin-right-bottom {
+    #left-bottom,
+    #right-bottom {
       align-items: end;
     }
   `;
 
   render() {
     return x`
-      <paged-margin-box
-        id="paged-margin-top-left-corner"
-        part="margin-box paged-margin-top-left-corner"
-      >
-        <slot name="paged-margin-top-left-corner"></slot>
+      <paged-margin-box id="top-left-corner" part="margin-box top-left-corner">
+        <slot name="top-left-corner"></slot>
       </paged-margin-box>
 
-      <div id="paged-margin-top" part="margin-box-group top">
-        <paged-margin-box
-          id="paged-margin-top-left"
-          part="margin-box paged-margin-top-left"
-        >
-          <slot name="paged-margin-top-left"></slot>
+      <div id="top" part="margin-box-group top">
+        <paged-margin-box id="top-left" part="margin-box top-left">
+          <slot name="top-left"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-top-center"
-          part="margin-box paged-margin-top-center"
-        >
-          <slot name="paged-margin-top-center"></slot>
+        <paged-margin-box id="top-center" part="margin-box top-center">
+          <slot name="top-center"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-top-right"
-          part="margin-box paged-margin-top-right"
-        >
-          <slot name="paged-margin-top-right"></slot>
+        <paged-margin-box id="top-right" part="margin-box top-right">
+          <slot name="top-right"></slot>
         </paged-margin-box>
       </div>
 
       <paged-margin-box
-        id="paged-margin-top-right-corner"
-        part="margin-box paged-margin-top-right-corner"
+        id="top-right-corner"
+        part="margin-box top-right-corner"
       >
-        <slot name="paged-margin-top-right-corner"></slot>
+        <slot name="top-right-corner"></slot>
       </paged-margin-box>
 
-      <div id="paged-margin-left" part="margin-box-group left">
-        <paged-margin-box
-          id="paged-margin-left-top"
-          part="margin-box paged-margin-left-top"
-        >
-          <slot name="paged-margin-left-top"></slot>
+      <div id="left" part="margin-box-group left">
+        <paged-margin-box id="left-top" part="margin-box left-top">
+          <slot name="left-top"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-left-middle"
-          part="margin-box paged-margin-left-middle"
-        >
-          <slot name="paged-margin-left-middle"></slot>
+        <paged-margin-box id="left-middle" part="margin-box left-middle">
+          <slot name="left-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-left-bottom"
-          part="margin-box paged-margin-left-bottom"
-        >
-          <slot name="paged-margin-left-bottom"></slot>
+        <paged-margin-box id="left-bottom" part="margin-box left-bottom">
+          <slot name="left-bottom"></slot>
         </paged-margin-box>
       </div>
 
-      <div id="paged-margin-right" part="margin-box-group right">
-        <paged-margin-box
-          id="paged-margin-right-top"
-          part="margin-box paged-margin-right-top"
-        >
-          <slot name="paged-margin-right-top"></slot>
+      <div id="right" part="margin-box-group right">
+        <paged-margin-box id="right-top" part="margin-box right-top">
+          <slot name="right-top"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-right-middle"
-          part="margin-box paged-margin-right-middle"
-        >
-          <slot name="paged-margin-right-middle"></slot>
+        <paged-margin-box id="right-middle" part="margin-box right-middle">
+          <slot name="right-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-right-bottom"
-          part="margin-box paged-margin-right-bottom"
-        >
-          <slot name="paged-margin-right-bottom"></slot>
+        <paged-margin-box id="right-bottom" part="margin-box right-bottom">
+          <slot name="right-bottom"></slot>
         </paged-margin-box>
       </div>
 
       <paged-margin-box
-        id="paged-margin-bottom-left-corner"
-        part="margin-box paged-margin-bottom-left-corner"
+        id="bottom-left-corner"
+        part="margin-box bottom-left-corner"
       >
-        <slot name="paged-margin-bottom-left-corner"></slot>
+        <slot name="bottom-left-corner"></slot>
       </paged-margin-box>
 
-      <div id="paged-margin-bottom" part="margin-box-group bottom">
-        <paged-margin-box
-          id="paged-margin-bottom-left"
-          part="margin-box paged-margin-bottom-left"
-        >
-          <slot name="paged-margin-bottom-left"></slot>
+      <div id="bottom" part="margin-box-group bottom">
+        <paged-margin-box id="bottom-left" part="margin-box bottom-left">
+          <slot name="bottom-left"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-bottom-center"
-          part="margin-box paged-margin-bottom-center"
-        >
-          <slot name="paged-margin-bottom-center"></slot>
+        <paged-margin-box id="bottom-center" part="margin-box bottom-center">
+          <slot name="bottom-center"></slot>
         </paged-margin-box>
-        <paged-margin-box
-          id="paged-margin-bottom-right"
-          part="margin-box paged-margin-bottom-right"
-        >
-          <slot name="paged-margin-bottom-right"></slot>
+        <paged-margin-box id="bottom-right" part="margin-box bottom-right">
+          <slot name="bottom-right"></slot>
         </paged-margin-box>
       </div>
 
       <paged-margin-box
-        id="paged-margin-bottom-right-corner"
-        part="margin-box paged-margin-bottom-right-corner"
+        id="bottom-right-corner"
+        part="margin-box bottom-right-corner"
       >
-        <slot name="paged-margin-bottom-right-corner"></slot>
+        <slot name="bottom-right-corner"></slot>
       </paged-margin-box>
     `;
   }
@@ -953,14 +769,11 @@ customElements.define("paged-margin-content", PagedMarginContent);
 customElements.define("paged-margin-box", PagedMarginBox);
 customElements.define("paged-margin", PagedMargin);
 
-// import { pagedjs } from 'pagedjs';
-
 class PagedPreview extends i$1 {
   static styles = i$4`
     body {
       margin: 0;
       padding: 0;
-    }
   `;
 
   constructor() {

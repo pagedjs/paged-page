@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import { cross } from "../utils/assets";
 
 /**
  * `<paged-page>` — A printable, CSS-controlled page component with support for
@@ -18,9 +19,9 @@ import { LitElement, html, css } from "lit";
  *
  * @csspart page-area - The main printable content area.
  *
- * @cssprop --page-width - Internal CSS width used for layout.
- * @cssprop --page-height - Internal CSS height used for layout.
- * @cssprop --bleed - Extra print bleed size.
+ * @cssprop --paged-width - Internal CSS width used for layout.
+ * @cssprop --paged-height - Internal CSS height used for layout.
+ * @cssprop --paged-bleed - Extra print bleed size.
  * @cssprop --margin-top
  * @cssprop --margin-bottom
  * @cssprop --margin-left
@@ -50,7 +51,7 @@ export class PagedPage extends LitElement {
     index: { type: Number },
     width: { type: String, reflect: true },
     height: { type: String, reflect: true },
-    bleed: { type: String, reflect: true },
+    bleed: { type: String },
     marks: { type: String },
   };
 
@@ -69,15 +70,16 @@ export class PagedPage extends LitElement {
     }
 
     :host {
-      width: calc(var(--page-width, 210mm) + var(--bleed, 0mm));
-      height: calc(var(--page-height, 297mm) + var(--bleed, 0mm));
+
+     --paged-mark-color: black;
+
+      width: calc(var(--paged-width, 210mm) + var(--paged-bleed, 0mm));
+      height: calc(var(--paged-height, 297mm) + var(--paged-bleed, 0mm));
       overflow: hidden;
       break-after: page;
       display: grid;
       margin: 0;
       padding: 0;
-
-      --bleed: 5mm;
 
       /* margins are part of the geometry */
       --margin-left: 8mm;
@@ -85,28 +87,20 @@ export class PagedPage extends LitElement {
       --margin-top: 6mm;
       --margin-bottom: 12mm;
 
-      /* bleed is part of the page geometry */
-      --bleed-top: 0;
-      --bleed-bottom: 0;
-      --bleed-right: 0;
-      --bleed-left: 0;
-      --bleed-inside: 0;
-      --bleed-outside: 0;
-
       grid-template-rows:
-        [bleed-top-start] var(--bleed, 0mm)
+        [bleed-top-start] var(--paged-bleed, 0mm)
         [bleed-top-end margin-top-start] var(--margin-top)
         [margin-top-end page-area-start] minmax(1px, 1fr)
         [page-area-end margin-bottom-start] var(--margin-bottom)
-        [margin-bottom-end bleed-bottom-start] var(--bleed, 0)
+        [margin-bottom-end bleed-bottom-start] var(--paged-bleed, 0mm)
         [bleed-bottom-end];
 
       grid-template-columns:
-        [bleed-left-start] var(--bleed, 0mm)
+        [bleed-left-start] var(--paged-bleed, 0mm)
         [bleed-left-end margin-left-start] var(--margin-left)
         [margin-left-end page-area-start] 1fr
         [page-area-end margin-right-start] var(--margin-right)
-        [margin-right-end bleed-right-start] var(--bleed, 0)
+        [margin-right-end bleed-right-start] var(--paged-bleed, 0mm)
         [bleed-right-end];
 
       /*  ==> dont need template area with template columns. (we should keep either one or the other
@@ -134,6 +128,70 @@ export class PagedPage extends LitElement {
         margin: 2rem auto;
       }
     }
+
+    .paged-crop {
+      width: 100%;
+      heigth:100%
+      background: black;
+    }
+
+    #paged-crop-t, #paged-crop-b {
+        grid-column: 2/5;
+        grid-row: 1;
+        height: 10px;
+        border-left:2px solid var(--paged-mark-color);
+        border-right:2px solid var(--paged-mark-color);
+    }
+
+    #paged-crop-b {
+      grid-row: 5;
+      align-self: end;
+    }
+
+
+    #paged-crop-r,
+    #paged-crop-l {
+        grid-row: 2/5;
+        grid-column: 1;
+        width: 10px;
+        height:100%;
+        border-top:2px solid var(--paged-mark-color);
+        border-bottom :2px solid var(--paged-mark-color);
+    }
+
+    #paged-crop-r {
+      grid-column: 5;
+align-self: end;
+justify-self: end;
+    }
+
+    .paged-cross {
+      width: 4mm;
+      height: auto;
+      align-self: center;
+      justify-self: center;
+      svg {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    #paged-cross-t {
+      grid-column: 3;
+      grid-row: 1;
+    }
+    #paged-cross-b {
+      grid-column: 3;
+      grid-row: 5;
+    }
+    #paged-cross-l {
+      grid-column: 1;
+      grid-row: 3;
+    }
+    #paged-cross-r {
+      grid-column: 5;
+      grid-row: 3;
+    }
   `;
 
   /**
@@ -145,6 +203,8 @@ export class PagedPage extends LitElement {
     this.width = "210mm";
     this.height = "297mm";
     this.name = ""; // auto-filled in connectedCallback
+    this.bleed = "0mm";
+    this.marks = "";
   }
 
   /**
@@ -167,12 +227,21 @@ export class PagedPage extends LitElement {
     console.log(CSS.supports(this.width));
     if ((this.width && !CSS.supports("width", this.width)) || !this.width) {
       console.log("there is no width for the page, using 210mm");
-      this.width = "210mm"; // reflect:true ensures the attribute is written
+      this.width = "210mm";
     }
     if ((this.height && !CSS.supports("height", this.height)) || !this.height) {
       console.log("there is no height for the page, using 210mm");
-      this.height = "297mm"; // reflect:true ensures the attribute is written
+      this.height = "297mm";
     }
+    // if there is no bleed or bleed = 0, then set the bleed to 0
+    // chrome seems to have issue with calc when one of the number is 0 without any value
+    if (!this.bleed || this.bleed == "0") {
+      this.bleed = "0mm";
+    }
+
+    // cropsmark
+
+    // check if marks="crop cross"
 
     // Inject the @page rules
     this.#injectPageStyles();
@@ -222,14 +291,16 @@ export class PagedPage extends LitElement {
     sheet.replaceSync(`
       @page ${this.name} {
         margin: 0;
-        size: calc(${this.width} + var(--bleed, 0mm))
-              calc(${this.height} + var(--bleed, 0mm));
+        size: calc(${this.width} + var(--paged-bleed, 0mm))
+              calc(${this.height} + var(--paged-bleed, 0mm));
       }
 
+ 
       [name="${this.name}"] {
-        --page-width: calc( ${this.width} + var(--bleed, 0mm));
-        --page-height: calc( ${this.height} + var(--bleed, 0mm));
         page: ${this.name};
+        --paged-bleed: ${this.bleed};
+        --paged-width: calc( ${this.width} + var(--paged-bleed, 0mm));
+        --paged-height: calc( ${this.height} + var(--paged-bleed, 0mm));
       }
     `);
 
@@ -242,7 +313,33 @@ export class PagedPage extends LitElement {
    * @returns {import("lit").TemplateResult}
    */
   render() {
+    const crossMarks = [];
+    const cropMarks = [];
+
+    if (this.marks?.includes("cross") && this.bleed != "0mm") {
+      crossMarks.push(
+        html`<div class="paged-cross" id="paged-cross-t">${cross}</div>`,
+      );
+      crossMarks.push(
+        html`<div class="paged-cross" id="paged-cross-r">${cross}</div>`,
+      );
+      crossMarks.push(
+        html`<div class="paged-cross" id="paged-cross-b">${cross}</div>`,
+      );
+      crossMarks.push(
+        html`<div class="paged-cross" id="paged-cross-l">${cross}</div>`,
+      );
+    }
+
+    if (this.marks?.includes("crop") && this.bleed != "0mm") {
+      cropMarks.push(html`<div class="paged-crop" id="paged-crop-t"></div>`);
+      cropMarks.push(html`<div class="paged-crop" id="paged-crop-r"></div>`);
+      cropMarks.push(html`<div class="paged-crop" id="paged-crop-b"></div>`);
+      cropMarks.push(html`<div class="paged-crop" id="paged-crop-l"></div>`);
+    }
+
     return html`
+      ${crossMarks} ${cropMarks}
       <div class="page-area" part="page-area">
         <slot></slot>
       </div>

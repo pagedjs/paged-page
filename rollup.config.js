@@ -7,9 +7,9 @@ import { terser } from "rollup-plugin-terser";
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: "src/PagedPreview.js",
+  input: "./src/PagedPreview.js",
   output: {
-    file: "dist/PagedPreview.js",
+    file: "dist/pagedPreview.js",
     format: "module",
     sourcemap: false,
   },

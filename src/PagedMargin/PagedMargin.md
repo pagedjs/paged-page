@@ -19,10 +19,10 @@ The paged-margin component renders a series of margin boxes. Content can be assi
 #### CSS
 
 Content can be assigned with CSS through a combination of a `::part`-selector
-which targets the relevant margin-box and a `::before` or `::after` pseudo-selector
+which targets the relevant `<margin-box>` and a `::before` or `::after` pseudo-selector
 which create a pseudo-element.
 
-This snippet will render a paged-margin box with the text 'Hello, world!' printed
+This snippet will render a `<paged-margin>` with the text 'Hello, world!' printed
 at the top center.
 
 Note: the `<paged-margin>` doesn't have an inherent size, much a like a `<div>`. The component is expected to be used in contexts where it either receives geometry from its parent or it being set with CSS, like in the example code:
@@ -98,11 +98,56 @@ paged-margin {
 </paged-margin>
 ```
 
+
+### Styling the margin boxes
+
+The `paged-margin` component exposes a set of parts to style and set content on the margin-boxes. The parts for the individual margin-boxes follow the naming scheme of the paged media spec.
+
+The following sample changes the font-style and background for the bottom-center margin box:
+
+```html
+<style>
+  paged-margin {
+    width: 210mm;
+    height: 297mm;
+  }
+
+  paged-margin::part(bottom-center) {
+    color: white;
+    background: black;
+    font-weight: bold;
+  }
+</style>
+
+<paged-margin></paged-margin>
+```
+
+### Adjusting the margin inline size
+
+The inline size of margin boxes which belong to a margin-box-group is defined through the grid declaration of the margin-box-group. Therefor the inline size can be changed by changing the grid declaration, this is possible by using the part for the relevant margin-box-group.
+
+Note: As both the inline and block size of the corners is defined through the size of the margins, their size can only be changed through the custom css properties.
+
+The following sample changes the size of the top-center margin box by adjusting the grid of the margin-box-group-top.
+
+```html
+<style>
+  paged-margin {
+    width: 210mm;
+    height: 297mm;
+  }
+
+  paged-margin::part(margin-box-group-top) {
+    grid-template-columns: 0 1fr 0;
+  }
+</style>
+
+<paged-margin></paged-margin>
+```
+
 ### Special parts
 
-The `paged-margin` component exposes a set of parts to style and set content on the margin-boxes. The parts for the individual margin-boxes follow the naming scheme of the paged media spec. In addition to the individual boxes the component also offers parts to target all (`margin-box`), or a subset of margin-boxes.
-
-The sample below uses the `margin-box` part to set the background of all margin-boxes while it uses he part `left` to set the color of the margin-boxes on the left side of the page.
+In addition to the individual boxes the component also offers parts to target all the margin boxes or a subset of them. The sample below uses the `margin-box` part to set the background of all margin-boxes while it uses the part `left` to set the color of the margin-boxes on the left side of the page.
 
 Note: the corner boxes are always part of two side. Top-left-corner box will be targeted by both the `left` as well as the `top`-part.
 

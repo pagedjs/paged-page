@@ -124,17 +124,27 @@ class PagedPage extends i$1 {
       display: grid;
       margin: 0;
       padding: 0;
+
+      /* margins are part of the geometry */
       --margin-left: 8mm;
       --margin-right: 10mm;
       --margin-top: 6mm;
       --margin-bottom: 12mm;
+
+      /* bleed is part of the page geometry */
+      --bleed-top: 0;
+      --bleed-bottom: 0;
+      --bleed-right: 0;
+      --bleed-left: 0;
+      --bleed-inside: 0;
+      --bleed-outside: 0;
 
       grid-template-rows:
         [bleed-top-start] var(--bleed, 0mm)
         [bleed-top-end margin-top-start] var(--margin-top)
         [margin-top-end page-area-start] minmax(1px, 1fr)
         [page-area-end margin-bottom-start] var(--margin-bottom)
-        [margin-bottom-end bleed-bottom-start] var(--bleed, 5mm)
+        [margin-bottom-end bleed-bottom-start] var(--bleed, 0)
         [bleed-bottom-end];
 
       grid-template-columns:
@@ -142,7 +152,7 @@ class PagedPage extends i$1 {
         [bleed-left-end margin-left-start] var(--margin-left)
         [margin-left-end page-area-start] 1fr
         [page-area-end margin-right-start] var(--margin-right)
-        [margin-right-end bleed-right-start] var(--bleed, 5mm)
+        [margin-right-end bleed-right-start] var(--bleed, 0)
         [bleed-right-end];
     }
 
@@ -153,8 +163,7 @@ class PagedPage extends i$1 {
 
     @media screen {
       :host {
-        // outline: 1px solid gainsboro;
-        // background: white;
+        outline: 1px solid gainsboro;
         margin: 2rem auto;
       }
     }

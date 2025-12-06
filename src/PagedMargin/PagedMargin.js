@@ -1,29 +1,6 @@
 import { LitElement, html, css } from "lit";
 
 /**
- * Expected use:
- * PagedHorizontalMarginAutosize
- *    PagedMarginBoxAutosize
- *      slot
- *    PagedMarginBoxAutosize
- *      slot
- *    PagedMarginBoxAutosize
- *      slot
- * 
- * 
- * The PagedMarginBoxAutosize measures length of its slotted content after 
- * it is added to DOM. It then emits an event `intrinsic-content-width`.
- * 
- * PagedHorizontalMarginAutosize listens for this event. When it receives it
- * it will update its internal registry and update sizes of the content
- * boxes by updating template column string.
- * 
- * At the moment changes in the element are not recognized.
- * slotchange event exists but only fires when nodes are added or removed.
- */
-
-
-/**
  * Essentially a no-op wrapper.
  * Should make it easier to style of select with javascript.
  */
@@ -47,6 +24,30 @@ export class PagedMarginBox extends LitElement {
     super();
   }
 
+  /**
+   * Returns the nodes assigned to the slot of the marginBox
+   * 
+   * @returns Array<Node>|null Array of assigned nodes, or null
+   * @question, does it make sens to include this?
+   * 
+   * Convenience, in that it shortens:
+   * marginBox.querySelector('slot').assignedNodes({flatten: true})
+   * 
+   * to:
+   * marginBox.contentNodes
+   * 
+   * But could achieve a comparable result by exposing the slot through a 
+   * shortcut?
+   */
+  get contentNodes () {
+    return this.renderRoot.querySelector('slot').assignedNodes({ flatten: true }) ?? null;
+  }
+
+  get contentElements () {
+    return this.renderRoot.querySelector('slot').assignedElements({ flatten: true }) ?? null;
+  }
+
+
   render () {
     return html`<slot></slot>`;
   }
@@ -61,9 +62,9 @@ export class PagedMargin extends LitElement {
   static styles = css`
     :host {
       --margin-top: 15mm;
-      --margin-right: 5mm;
-      --margin-bottom: 10mm;
-      --margin-left: 5mm;
+      --margin-right: 15mm;
+      --margin-bottom: 15mm;
+      --margin-left: 15mm;
 
       display: grid;
       grid-template-columns: 
@@ -136,69 +137,94 @@ export class PagedMargin extends LitElement {
     }
   `
 
+  get marginBoxes () {
+    if (this.renderRoot) {
+      return {
+        topLeftCorner: this.renderRoot.querySelector('#top-left-corner') ?? null,
+        topLeft: this.renderRoot.querySelector('#top-left') ?? null,
+        topCenter: this.renderRoot.querySelector('#top-center') ?? null,
+        topRight: this.renderRoot.querySelector('#top-right') ?? null,
+        topRightCorner: this.renderRoot.querySelector('#top-right-corner') ?? null,
+        leftTop: this.renderRoot.querySelector('#left-top') ?? null,
+        leftMiddle: this.renderRoot.querySelector('#left-middle') ?? null,
+        leftBottom: this.renderRoot.querySelector('#left-bottom') ?? null,
+        rightTop: this.renderRoot.querySelector('#right-top') ?? null,
+        rightMiddle: this.renderRoot.querySelector('#right-middle') ?? null,
+        rightBottom: this.renderRoot.querySelector('#right-bottom') ?? null,
+        bottomLeftCorner: this.renderRoot.querySelector('#bottom-left-corner') ?? null,
+        bottomLeft: this.renderRoot.querySelector('#bottom-left') ?? null,
+        bottomCenter: this.renderRoot.querySelector('#bottom-center') ?? null,
+        bottomRight: this.renderRoot.querySelector('#bottom-right') ?? null,
+        bottomRightCorner: this.renderRoot.querySelector('#bottom-right-corner') ?? null
+      }
+    }
+
+    return null;
+  }
+
   render () {
     return html`
-      <paged-margin-box id="top-left-corner" part="margin-box top-left-corner">
+      <paged-margin-box id="top-left-corner" part="margin-box top left corner top-left-corner">
         <slot name="top-left-corner"></slot>
       </paged-margin-box>
 
-      <div id="top" part="margin-box-group top">
-        <paged-margin-box id="top-left" part="margin-box top-left">
+      <div id="top" part="margin-box-group margin-box-group-top">
+        <paged-margin-box id="top-left" part="margin-box top top-left">
           <slot name="top-left"></slot>
         </paged-margin-box>
-        <paged-margin-box id="top-center" part="margin-box top-center">
+        <paged-margin-box id="top-center" part="margin-box top top-center">
           <slot name="top-center"></slot>
         </paged-margin-box>
-        <paged-margin-box id="top-right" part="margin-box top-right">
+        <paged-margin-box id="top-right" part="margin-box top top-right">
           <slot name="top-right"></slot>
         </paged-margin-box>
       </div>
 
-      <paged-margin-box id="top-right-corner" part="margin-box top-right-corner">
+      <paged-margin-box id="top-right-corner" part="margin-box top right corner top-right-corner">
         <slot name="top-right-corner"></slot>
       </paged-margin-box>
       
-      <div id="left" part="margin-box-group left">
-        <paged-margin-box id="left-top" part="margin-box left-top">
+      <div id="left" part="margin-box-group margin-box-group-left">
+        <paged-margin-box id="left-top" part="margin-box left left-top">
           <slot name="left-top"></slot>
         </paged-margin-box>
-        <paged-margin-box id="left-middle" part="margin-box left-middle">
+        <paged-margin-box id="left-middle" part="margin-box left left-middle">
           <slot name="left-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box id="left-bottom" part="margin-box left-bottom">
+        <paged-margin-box id="left-bottom" part="margin-box left eft-bottom">
           <slot name="left-bottom"></slot>
         </paged-margin-box>
       </div>
 
-      <div id="right" part="margin-box-group right">
-        <paged-margin-box id="right-top" part="margin-box right-top">
+      <div id="right" part="margin-box-group margin-box-group-right">
+        <paged-margin-box id="right-top" part="margin-box right right-top">
           <slot name="right-top"></slot>
         </paged-margin-box>
-        <paged-margin-box id="right-middle" part="margin-box right-middle">
+        <paged-margin-box id="right-middle" part="margin-box right right-middle">
           <slot name="right-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box id="right-bottom" part="margin-box right-bottom">
+        <paged-margin-box id="right-bottom" part="margin-box right right-bottom">
           <slot name="right-bottom"></slot>
         </paged-margin-box>
       </div>
       
-      <paged-margin-box id="bottom-left-corner" part="margin-box bottom-left-corner">
+      <paged-margin-box id="bottom-left-corner" part="margin-box bottom left corner bottom-left-corner">
         <slot name="bottom-left-corner"></slot>
       </paged-margin-box>
       
-      <div id="bottom" part="margin-box-group bottom">
-        <paged-margin-box id="bottom-left" part="margin-box bottom-left">
+      <div id="bottom" part="margin-box-group margin-box-group-bottom">
+        <paged-margin-box id="bottom-left" part="margin-box bottom bottom-left">
           <slot name="bottom-left"></slot>
         </paged-margin-box>
-        <paged-margin-box id="bottom-center" part="margin-box bottom-center">
+        <paged-margin-box id="bottom-center" part="margin-box bottom bottom-center">
           <slot name="bottom-center"></slot>
         </paged-margin-box>
-        <paged-margin-box id="bottom-right" part="margin-box bottom-right">
+        <paged-margin-box id="bottom-right" part="margin-box bottom bottom-right">
           <slot name="bottom-right"></slot>
         </paged-margin-box>
       </div>
 
-      <paged-margin-box id="bottom-right-corner" part="margin-box bottom-right-corner">
+      <paged-margin-box id="bottom-right-corner" part="margin-box bottom right corner bottom-right-corner">
         <slot name="bottom-right-corner"></slot>
       </paged-margin-box>
     `;

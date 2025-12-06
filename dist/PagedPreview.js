@@ -100,6 +100,7 @@ class PagedPage extends i$1 {
     width: { type: String, reflect: true },
     height: { type: String, reflect: true },
     bleed: { type: String, reflect: true },
+    marks: { type: String },
   };
 
   /**
@@ -124,6 +125,8 @@ class PagedPage extends i$1 {
       display: grid;
       margin: 0;
       padding: 0;
+
+      --bleed: 5mm;
 
       /* margins are part of the geometry */
       --margin-left: 8mm;
@@ -154,7 +157,20 @@ class PagedPage extends i$1 {
         [page-area-end margin-right-start] var(--margin-right)
         [margin-right-end bleed-right-start] var(--bleed, 0)
         [bleed-right-end];
+
+      /*  ==> dont need template area with template columns. (we should keep either one or the other
+      //   grid-template-areas:
+      //     "bleed-top bleed-top bleed-top bleed-top bleed-top"
+      //     "bleed-left margin-top-left-corner margin-top margin-top-right-corner bleed-right"
+      //     "bleed-left margin-left page-area margin-right bleed-right"
+      //     "bleed-left margin-bottom-left-corner margin-bottom margin-bottom-right-corner bleed-right";
+      //     "bleed-bottom bleed-bottom bleed-bottom bleed-bottom bleed-bottom ";
+      //     */
     }
+
+    // ::target(top) {
+    // grid-area: margin-top;
+    // }
 
     .page-area {
       grid-column: page-area-start / page-area-end;
@@ -691,19 +707,18 @@ customElements.define("paged-horizontal-margin-autosize-simplified", PagedHorizo
  *      slot
  *    PagedMarginBoxAutosize
  *      slot
- * 
- * 
- * The PagedMarginBoxAutosize measures length of its slotted content after 
+ *
+ *
+ * The PagedMarginBoxAutosize measures length of its slotted content after
  * it is added to DOM. It then emits an event `intrinsic-content-width`.
- * 
+ *
  * PagedHorizontalMarginAutosize listens for this event. When it receives it
  * it will update its internal registry and update sizes of the content
  * boxes by updating template column string.
- * 
+ *
  * At the moment changes in the element are not recognized.
  * slotchange event exists but only fires when nodes are added or removed.
  */
-
 
 /**
  * Essentially a no-op wrapper.
@@ -714,11 +729,10 @@ class PagedMarginContent extends i$1 {
     super();
   }
 
-  render () {
+  render() {
     return x`<slot></slot>`;
   }
 }
-
 
 /**
  * No-op wrapper. Makes the code a little more legible?
@@ -729,52 +743,52 @@ class PagedMarginBox extends i$1 {
     super();
   }
 
-  render () {
+  render() {
     return x`<slot></slot>`;
   }
 }
 
-
 class PagedMargin extends i$1 {
-  constructor () {
+  constructor() {
     super();
   }
 
+  //i believe that the margin sizing should come from the parent. margin box should only car e of the children’s geometry
+
   static styles = i$4`
     :host {
-      --margin-top: 15mm;
-      --margin-right: 5mm;
-      --margin-bottom: 10mm;
-      --margin-left: 5mm;
-
       display: grid;
-      grid-template-columns: 
-        [margin-left-start] var(--margin-left)
-        [margin-left-end page-area-start] 1fr
-        [margin-right-start page-area-end] var(--margin-right)
-        [margin-right-end];
-      grid-template-rows:
-        [margin-top-start] var(--margin-top)
-        [margin-top-end page-area-start] 1fr
-        [margin-bottom-start page-area-end] var(--margin-bottom)
-        [margin-bottom-end];
-      grid-template-areas:
-        "top-left-corner top top-right-corner"
-        "left page-area right"
-        "bottom-left-corner bottom bottom-right-corner";
+      grid-template-columns: subgrid;
+      grid-template-rows: subgrid;
     }
 
-    #top-left-corner { grid-area: top-left-corner; }
-    #top { grid-area: top;}
-    #top-right-corner { grid-area: top-right-corner; }
+    #paged-margin-top-left-corner {
+      grid-area: margin-top-left-corner;
+    }
+    #paged-margin-top {
+      grid-area: margin-top;
+    }
+    #paged-margin-top-right-corner {
+      grid-area: margin-top-right-corner;
+    }
 
-    #right { grid-area: right; }
+    #paged-margin-right {
+      grid-area: margin-right;
+    }
 
-    #bottom-left-corner { grid-area: bottom-left-corner; }
-    #bottom { grid-area: bottom; }
-    #bottom-right-corner { grid-area: bottom-right-corner; }
+    #paged-margin-bottom-left-corner {
+      grid-area: margin-bottom-left-corner;
+    }
+    #paged-margin-bottom {
+      grid-area: margin-bottom;
+    }
+    #paged-margin-bottom-right-corner {
+      grid-area: margin-bottom-right-corner;
+    }
 
-    #left { grid-area: left; }
+    #paged-margin-left {
+      grid-area: margin-left;
+    }
 
     paged-margin-box {
       flex-grow: 1;
@@ -783,105 +797,153 @@ class PagedMargin extends i$1 {
       justify-content: center;
     }
 
-    #top,
-    #bottom {
+    #paged-margin-top,
+    #paged-margin-bottom {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
     }
-    
-    #left,
-    #right {
+
+    #paged-margin-left,
+    #paged-margin-right {
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
     }
 
-    #top-left,
-    #bottom-left {
+    #paged-margin-top-left,
+    #paged-margin-bottom-left {
       text-align: left;
       justify-content: start;
     }
 
-    #top-right,
-    #bottom-right {
+    #paged-margin-top-right,
+    #paged-margin-bottom-right {
       text-align: right;
       justify-content: end;
     }
 
-    #left-top,
-    #right-top {
+    #paged-margin-left-top,
+    #paged-margin-right-top {
       align-items: start;
     }
 
-    #left-bottom,
-    #right-bottom {
+    #paged-margin-left-bottom,
+    #paged-margin-right-bottom {
       align-items: end;
     }
-  `
+  `;
 
-  render () {
+  render() {
     return x`
-      <paged-margin-box id="top-left-corner" part="margin-box top-left-corner">
-        <slot name="top-left-corner"></slot>
+      <paged-margin-box
+        id="paged-margin-top-left-corner"
+        part="margin-box paged-margin-top-left-corner"
+      >
+        <slot name="paged-margin-top-left-corner"></slot>
       </paged-margin-box>
 
-      <div id="top" part="margin-box-group top">
-        <paged-margin-box id="top-left" part="margin-box top-left">
-          <slot name="top-left"></slot>
+      <div id="paged-margin-top" part="margin-box-group top">
+        <paged-margin-box
+          id="paged-margin-top-left"
+          part="margin-box paged-margin-top-left"
+        >
+          <slot name="paged-margin-top-left"></slot>
         </paged-margin-box>
-        <paged-margin-box id="top-center" part="margin-box top-center">
-          <slot name="top-center"></slot>
+        <paged-margin-box
+          id="paged-margin-top-center"
+          part="margin-box paged-margin-top-center"
+        >
+          <slot name="paged-margin-top-center"></slot>
         </paged-margin-box>
-        <paged-margin-box id="top-right" part="margin-box top-right">
-          <slot name="top-right"></slot>
+        <paged-margin-box
+          id="paged-margin-top-right"
+          part="margin-box paged-margin-top-right"
+        >
+          <slot name="paged-margin-top-right"></slot>
         </paged-margin-box>
       </div>
 
-      <paged-margin-box id="top-right-corner" part="margin-box top-right-corner">
-        <slot name="top-right-corner"></slot>
+      <paged-margin-box
+        id="paged-margin-top-right-corner"
+        part="margin-box paged-margin-top-right-corner"
+      >
+        <slot name="paged-margin-top-right-corner"></slot>
       </paged-margin-box>
-      
-      <div id="left" part="margin-box-group left">
-        <paged-margin-box id="left-top" part="margin-box left-top">
-          <slot name="left-top"></slot>
+
+      <div id="paged-margin-left" part="margin-box-group left">
+        <paged-margin-box
+          id="paged-margin-left-top"
+          part="margin-box paged-margin-left-top"
+        >
+          <slot name="paged-margin-left-top"></slot>
         </paged-margin-box>
-        <paged-margin-box id="left-middle" part="margin-box left-middle">
-          <slot name="left-middle"></slot>
+        <paged-margin-box
+          id="paged-margin-left-middle"
+          part="margin-box paged-margin-left-middle"
+        >
+          <slot name="paged-margin-left-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box id="left-bottom" part="margin-box left-bottom">
-          <slot name="left-bottom"></slot>
+        <paged-margin-box
+          id="paged-margin-left-bottom"
+          part="margin-box paged-margin-left-bottom"
+        >
+          <slot name="paged-margin-left-bottom"></slot>
         </paged-margin-box>
       </div>
 
-      <div id="right" part="margin-box-group right">
-        <paged-margin-box id="right-top" part="margin-box right-top">
-          <slot name="right-top"></slot>
+      <div id="paged-margin-right" part="margin-box-group right">
+        <paged-margin-box
+          id="paged-margin-right-top"
+          part="margin-box paged-margin-right-top"
+        >
+          <slot name="paged-margin-right-top"></slot>
         </paged-margin-box>
-        <paged-margin-box id="right-middle" part="margin-box right-middle">
-          <slot name="right-middle"></slot>
+        <paged-margin-box
+          id="paged-margin-right-middle"
+          part="margin-box paged-margin-right-middle"
+        >
+          <slot name="paged-margin-right-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box id="right-bottom" part="margin-box right-bottom">
-          <slot name="right-bottom"></slot>
+        <paged-margin-box
+          id="paged-margin-right-bottom"
+          part="margin-box paged-margin-right-bottom"
+        >
+          <slot name="paged-margin-right-bottom"></slot>
         </paged-margin-box>
       </div>
-      
-      <paged-margin-box id="bottom-left-corner" part="margin-box bottom-left-corner">
-        <slot name="bottom-left-corner"></slot>
+
+      <paged-margin-box
+        id="paged-margin-bottom-left-corner"
+        part="margin-box paged-margin-bottom-left-corner"
+      >
+        <slot name="paged-margin-bottom-left-corner"></slot>
       </paged-margin-box>
-      
-      <div id="bottom" part="margin-box-group bottom">
-        <paged-margin-box id="bottom-left" part="margin-box bottom-left">
-          <slot name="bottom-left"></slot>
+
+      <div id="paged-margin-bottom" part="margin-box-group bottom">
+        <paged-margin-box
+          id="paged-margin-bottom-left"
+          part="margin-box paged-margin-bottom-left"
+        >
+          <slot name="paged-margin-bottom-left"></slot>
         </paged-margin-box>
-        <paged-margin-box id="bottom-center" part="margin-box bottom-center">
-          <slot name="bottom-center"></slot>
+        <paged-margin-box
+          id="paged-margin-bottom-center"
+          part="margin-box paged-margin-bottom-center"
+        >
+          <slot name="paged-margin-bottom-center"></slot>
         </paged-margin-box>
-        <paged-margin-box id="bottom-right" part="margin-box bottom-right">
-          <slot name="bottom-right"></slot>
+        <paged-margin-box
+          id="paged-margin-bottom-right"
+          part="margin-box paged-margin-bottom-right"
+        >
+          <slot name="paged-margin-bottom-right"></slot>
         </paged-margin-box>
       </div>
 
-      <paged-margin-box id="bottom-right-corner" part="margin-box bottom-right-corner">
-        <slot name="bottom-right-corner"></slot>
+      <paged-margin-box
+        id="paged-margin-bottom-right-corner"
+        part="margin-box paged-margin-bottom-right-corner"
+      >
+        <slot name="paged-margin-bottom-right-corner"></slot>
       </paged-margin-box>
     `;
   }

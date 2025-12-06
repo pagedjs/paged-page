@@ -51,6 +51,7 @@ export class PagedPage extends LitElement {
     width: { type: String, reflect: true },
     height: { type: String, reflect: true },
     bleed: { type: String, reflect: true },
+    marks: { type: String },
   };
 
   /**
@@ -75,6 +76,8 @@ export class PagedPage extends LitElement {
       display: grid;
       margin: 0;
       padding: 0;
+
+      --bleed: 5mm;
 
       /* margins are part of the geometry */
       --margin-left: 8mm;
@@ -105,7 +108,20 @@ export class PagedPage extends LitElement {
         [page-area-end margin-right-start] var(--margin-right)
         [margin-right-end bleed-right-start] var(--bleed, 0)
         [bleed-right-end];
+
+      /*  ==> dont need template area with template columns. (we should keep either one or the other
+      //   grid-template-areas:
+      //     "bleed-top bleed-top bleed-top bleed-top bleed-top"
+      //     "bleed-left margin-top-left-corner margin-top margin-top-right-corner bleed-right"
+      //     "bleed-left margin-left page-area margin-right bleed-right"
+      //     "bleed-left margin-bottom-left-corner margin-bottom margin-bottom-right-corner bleed-right";
+      //     "bleed-bottom bleed-bottom bleed-bottom bleed-bottom bleed-bottom ";
+      //     */
     }
+
+    // ::target(top) {
+    // grid-area: margin-top;
+    // }
 
     .page-area {
       grid-column: page-area-start / page-area-end;

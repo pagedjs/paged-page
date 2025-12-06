@@ -99,6 +99,7 @@ class PagedPage extends i$1 {
     index: { type: Number },
     width: { type: String, reflect: true },
     height: { type: String, reflect: true },
+    bleed: { type: String, reflect: true },
   };
 
   /**
@@ -120,7 +121,6 @@ class PagedPage extends i$1 {
       height: calc(var(--page-height, 297mm) + var(--bleed, 0mm));
       overflow: hidden;
       break-after: page;
-      background: orange;
       display: grid;
       margin: 0;
       padding: 0;
@@ -183,7 +183,19 @@ class PagedPage extends i$1 {
     // Auto-assign name if missing
     if (!this.hasAttribute("name") || !this.name?.trim()) {
       const autoName = `page-${crypto.randomUUID()}`;
-      this.name = autoName; // reflect:true ensures the attribute is written
+      this.name = autoName; // reflect:true ensures the attribute is written on the parent object so CSS can use it.
+    }
+
+    // validate value for width and height
+    console.log(this.width);
+    console.log(CSS.supports(this.width));
+    if ((this.width && !CSS.supports("width", this.width)) || !this.width) {
+      console.log("there is no width for the page, using 210mm");
+      this.width = "210mm"; // reflect:true ensures the attribute is written
+    }
+    if ((this.height && !CSS.supports("height", this.height)) || !this.height) {
+      console.log("there is no height for the page, using 210mm");
+      this.height = "297mm"; // reflect:true ensures the attribute is written
     }
 
     // Inject the @page rules

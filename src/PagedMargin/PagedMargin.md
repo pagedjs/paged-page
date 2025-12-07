@@ -1,10 +1,10 @@
 # PagedMargin
 
-The PagedMargin components facilitates rendering margin content on a page as defined in the W3C paged media spec.
+The PagedMargin components facilitates rendering page-margin boxes as defined in the [W3C Paged Media Module](https://www.w3.org/TR/css-page-3/#margin-boxes). The components aim to cover the standard, and support some functionality beyond the standard.
 
 ## Usage
 
-The paged-margin component renders the margin boxes. It is intended to be
+The paged-margin component renders the page-margin boxes. It is intended to be
 used with a paged-page component. But can also be used by itself:
 
 ```html
@@ -14,7 +14,7 @@ used with a paged-page component. But can also be used by itself:
 
 ### Assigning content
 
-The paged-margin component renders a series of margin boxes. Content can be assigned through CSS or the DOM. 
+The paged-margin component renders a series of page-margin boxes. Content can be assigned through CSS, as defined in the standard, or the DOM, beyond the standard. 
 
 #### CSS
 
@@ -99,11 +99,11 @@ paged-margin {
 ```
 
 
-### Styling the margin boxes
+### Styling the page-margin boxes
 
-The `paged-margin` component exposes a set of parts to style and set content on the margin-boxes. The parts for the individual margin-boxes follow the naming scheme of the paged media spec.
+The `paged-margin` component exposes a set of parts to style and set content on the margin-boxes. The parts for the individual page-margin boxes follow the naming scheme of the paged media spec.
 
-The following sample changes the font-style and background for the bottom-center margin box:
+The following sample changes the font-style and background for the bottom-center page-margin box:
 
 ```html
 <style>
@@ -122,13 +122,21 @@ The following sample changes the font-style and background for the bottom-center
 <paged-margin></paged-margin>
 ```
 
-### Adjusting the margin inline size
+### Adjusting dimensions of variable size page-margin boxes
 
-The inline size of margin boxes which belong to a margin-box-group is defined through the grid declaration of the margin-box-group. Therefor the inline size can be changed by changing the grid declaration, this is possible by using the part for the relevant margin-box-group.
+As defined in the W3C specification the width and height of the corner page-margin boxes is fixed and defined by the margin size. The space in between the corners is divided into three boxes which have either a variable width on the top and bottom of the page, or a variable height on the left and right side of the page. The page-margin component wraps these boxes in a margin-box-group and uses a grid to control the dimensions of the boxes in the group.
 
-Note: As both the inline and block size of the corners is defined through the size of the margins, their size can only be changed through the custom css properties.
+The component exposes five parts to select either all, or an individual group allowing to change the grid and thus the size of the boxes. 
 
-The following sample changes the size of the top-center margin box by adjusting the grid of the margin-box-group-top.
+| Part | Description |
+| ---- | ----------- |
+| margin-box-group | all the page-margin box groups |
+| margin-box-group-top | top page-margin box group: top-left, top-center & top-right |
+| margin-box-group-right | right page-margin box group: right-top, right-middle & right-bottom |
+| margin-box-group-bottom | bottom page-margin box group: bottom-left, bottom-center & bottom-right |
+| margin-box-group-left | left page-margin box group: left-top, left-middle & left-bottom |
+
+The following sample adjusts the grid of the margin-box-group-top to make the top-center page-margin box occupy the full width between the corner boxes.
 
 ```html
 <style>
@@ -145,11 +153,19 @@ The following sample changes the size of the top-center margin box by adjusting 
 <paged-margin></paged-margin>
 ```
 
-### Special parts
+### Special parts (groups)
 
-In addition to the individual boxes the component also offers parts to target all the margin boxes or a subset of them. The sample below uses the `margin-box` part to set the background of all margin-boxes while it uses the part `left` to set the color of the margin-boxes on the left side of the page.
+In addition to the individual boxes the component also offers parts to target all the page-margin boxes or a side of the sheet. The corner boxes are always part of two sides, example, the top-left-corner box will be targeted by both the `left` as well as the `top`-part. 
 
-Note: the corner boxes are always part of two side. Top-left-corner box will be targeted by both the `left` as well as the `top`-part.
+| Part | Description |
+| ---- | ----------- |
+| margin-box | all the page-margin boxes |
+| top | all page-margin boxes on the top side of the page, including top left corner and top right corner |
+| right | all page-margin boxes on the right side of the page, including top right and bottom right corner. |
+| bottom | all page-margin boxes on the bottom side of the page, including bottom left corner and bottom right corner. |
+| left | all page-margin boxes on the left side of the page, including top left corner and bottom left corner |
+
+The sample below uses the `margin-box` part to set the background of all page-margin boxes while it uses the part `left` to set the color of the page-margin boxes on the left side of the page.
 
 ```html
 
@@ -177,8 +193,7 @@ paged-margin::part(left) {
 
 ```
 
-Note: the parts are not meant to be used to set the margin sizes, this might
-lead to unexpected results.
+Note: the parts are not meant to be used to set the margin sizes (or the block size of the page-margin boxes), this might lead to unexpected results.
 
 
 ## API
@@ -189,7 +204,7 @@ lead to unexpected results.
 
 | Property | Attribute | Type | Default | Description |
 | -------- | --------- | ---- | ------- | ----------- |
-| marginBoxes | | { str: MarginBox \| null} \| null | | Returns a dictionary with the MarginBoxes or null. Keys are the names of the margin boxes. |
+| marginBoxes | | { str: MarginBox \| null} \| null | | Returns a dictionary with the MarginBoxes or null. Keys are the names of the page-margin boxes. |
 
 
 #### Methods
@@ -202,53 +217,53 @@ lead to unexpected results.
 
 | Slot | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| top-left-corner | Element | `<empty>` | top left corner margin box |
-| top-left | Element | `<empty>` | top left margin box |
-| top-center | Element | `<empty>` | top center margin box |
-| top-right | Element | `<empty>` | top right margin box |
-| top-right-corner | Element | `<empty>` | top right corner margin box |
-| left-top | Element | `<empty>` | left top margin box |
-| left-middle | Element | `<empty>` | left middle margin box |
-| left-bottom | Element | `<empty>` | left bottom margin box |
-| right-top | Element | `<empty>` | right top margin box |
-| right-middle | Element | `<empty>` | right middle margin box |
-| right-bottom | Element | `<empty>` | right bottom margin box |
-| bottom-left-corner | Element | `<empty>` | bottom left corner margin box |
-| bottom-left | Element | `<empty>` | bottom left margin box |
-| bottom-center | Element | `<empty>` | bottom center margin box |
-| bottom-right | Element | `<empty>` | bottom right margin box |
-| bottom-right-corner | Element | `<empty>` | bottom right corner margin box |
+| top-left-corner | Element | `<empty>` | top left corner page-margin box |
+| top-left | Element | `<empty>` | top left page-margin box |
+| top-center | Element | `<empty>` | top center page-margin box |
+| top-right | Element | `<empty>` | top right page-margin box |
+| top-right-corner | Element | `<empty>` | top right corner page-margin box |
+| left-top | Element | `<empty>` | left top page-margin box |
+| left-middle | Element | `<empty>` | left middle page-margin box |
+| left-bottom | Element | `<empty>` | left bottom page-margin box |
+| right-top | Element | `<empty>` | right top page-margin box |
+| right-middle | Element | `<empty>` | right middle page-margin box |
+| right-bottom | Element | `<empty>` | right bottom page-margin box |
+| bottom-left-corner | Element | `<empty>` | bottom left corner page-margin box |
+| bottom-left | Element | `<empty>` | bottom left page-margin box |
+| bottom-center | Element | `<empty>` | bottom center page-margin box |
+| bottom-right | Element | `<empty>` | bottom right page-margin box |
+| bottom-right-corner | Element | `<empty>` | bottom right corner page-margin box |
 
 #### Parts
 
 | Part | Description |
 | ---- | ----------- |
-| margin-box | all the margin boxes |
-| top | all margin boxes on the top side of the page, including top left corner and top right corner |
-| right | all margin boxes on the right side of the page, including top right and bottom right corner. |
-| bottom | all margin boxes on the bottom side of the page, including bottom left corner and bottom right corner. |
-| left | all margin boxes on the left side of the page, including top left corner and bottom left corner |
-| margin-box-group | all the margin box groups |
-| margin-box-group-top | top margin box group: top-left, top-center & top-right |
-| margin-box-group-right | right margin box group: right-top, right-middle & right-bottom |
-| margin-box-group-bottom | bottom margin box group: bottom-left, bottom-center & bottom-right |
-| margin-box-group-left | left margin box group: left-top, left-middle & left-bottom |
-| top-left-corner | the top left corner margin box |
-| top-left | top left margin box |
-| top-center | top center margin box |
-| top-right | top right margin box |
-| top-right-corner | top right corner margin box |
-| left-top | the left top margin box |
-| left-middle | the left middle margin box |
-| left-bottom | the left bottom margin box |
-| right-top | the right top margin box |
-| right-middle | the right middle margin box |
-| right-bottom | the right bottom margin box |
-| bottom-left-corner | bottom top left corner margin box |
-| bottom-left | bottom left margin box |
-| bottom-center | bottom center margin box |
-| bottom-right | bottom right margin box |
-| bottom-right-corner | bottom right corner margin box |
+| margin-box | all the page-margin boxes |
+| top | all page-margin boxes on the top side of the page, including top left corner and top right corner |
+| right | all page-margin boxes on the right side of the page, including top right and bottom right corner. |
+| bottom | all page-margin boxes on the bottom side of the page, including bottom left corner and bottom right corner. |
+| left | all page-margin boxes on the left side of the page, including top left corner and bottom left corner |
+| margin-box-group | all the page-margin box groups |
+| margin-box-group-top | top page-margin box group: top-left, top-center & top-right |
+| margin-box-group-right | right page-margin box group: right-top, right-middle & right-bottom |
+| margin-box-group-bottom | bottom page-margin box group: bottom-left, bottom-center & bottom-right |
+| margin-box-group-left | left page-margin box group: left-top, left-middle & left-bottom |
+| top-left-corner | the top left corner page-margin box |
+| top-left | top left page-margin box |
+| top-center | top center page-margin box |
+| top-right | top right page-margin box |
+| top-right-corner | top right corner page-margin box |
+| left-top | the left top page-margin box |
+| left-middle | the left middle page-margin box |
+| left-bottom | the left bottom page-margin box |
+| right-top | the right top page-margin box |
+| right-middle | the right middle page-margin box |
+| right-bottom | the right bottom page-margin box |
+| bottom-left-corner | bottom top left corner page-margin box |
+| bottom-left | bottom left page-margin box |
+| bottom-center | bottom center page-margin box |
+| bottom-right | bottom right page-margin box |
+| bottom-right-corner | bottom right corner page-margin box |
 
 #### Custom CSS Properties
 
@@ -275,8 +290,8 @@ lead to unexpected results.
 
 | Property | Attribute | Type | Default | Description |
 | -------- | --------- | ---- | ------- | ----------- |
-| contentNodes | | Node[] \| null | | Returns an array with the nodes assigned to the slot of the margin box. |
-| contentElements | | Element[] \| null | | Returns an array with the elements assigned to the slot of the margin box. |
+| contentNodes | | Node[] \| null | | Returns an array with the nodes assigned to the slot of the page-margin box. |
+| contentElements | | Element[] \| null | | Returns an array with the elements assigned to the slot of the page-margin box. |
 
 
 #### Slots

@@ -270,6 +270,8 @@ class PagedPage extends i$1 {
     .page-area {
       grid-column: page-area-start / page-area-end;
       grid-row: page-area-start / page-area-end;
+      /*the page-area has an overflow:hidden to follow the W3C specifications, but it can be overriden with the author css.*/
+      overflow:hidden;
     }
 
     @media screen {
@@ -506,9 +508,7 @@ class PagedPage extends i$1 {
     }
 
     return x`
-      <div class="page-marks">
-        ${crossMarks} ${cropMarks}
-      </div>
+      <div class="page-marks">${crossMarks} ${cropMarks}</div>
       <div class="page-margins">
         <slot name="margins">
           <paged-margins
@@ -519,7 +519,8 @@ class PagedPage extends i$1 {
             left-top, left-middle, left-bottom,
             right-top, right-middle, right-bottom,
             bottom-left-corner, bottom-left, bottom-center, bottom-right,
-            bottom-right-corner">
+            bottom-right-corner"
+          >
           </paged-margins>
         </slot>
       </div>

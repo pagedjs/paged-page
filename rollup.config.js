@@ -9,7 +9,7 @@ const production = !process.env.ROLLUP_WATCH;
 export default {
   input: "./src/PagedPreview.js",
   output: {
-    file: "dist/pagedPreview.js",
+    file: "dist/PagedPreview.js",
     format: "module",
     sourcemap: false,
   },

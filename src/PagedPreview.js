@@ -1,15 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { PagedDocument } from "./PagedDocument.js";
 import { PagedPage } from "./PagedPage/PagedPage.js";
-import {
-  PagedHorizontalMarginThroughPseudo,
-  PagedMarginBoxThroughPseudo,
-} from "./PagedMargin/research/PagedMarginPseudo.js";
-import {
-  PagedHorizontalMarginAutosize,
-  PagedMarginBoxAutosize,
-} from "./PagedMargin/research/PagedMarginAutosize.js";
-import { PagedHorizontalMarginAutosizeSimplified } from "./PagedMargin/research/PagedMarginAutosizeSimplified.js";
 import { PagedMarginBox, PagedMargin } from "./PagedMargin/PagedMargin.js";
 // import { pagedjs } from 'pagedjs';
 

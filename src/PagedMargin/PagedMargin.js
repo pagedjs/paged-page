@@ -61,21 +61,21 @@ export class PagedMargin extends LitElement {
 
   static styles = css`
     :host {
-      --margin-top: 15mm;
-      --margin-right: 15mm;
-      --margin-bottom: 15mm;
-      --margin-left: 15mm;
+      --paged-margin-top: 15mm;
+      --paged-margin-right: 15mm;
+      --paged-margin-bottom: 15mm;
+      --paged-margin-left: 15mm;
 
       display: grid;
       grid-template-columns: 
-        [margin-left-start] var(--margin-left)
+        [margin-left-start] var(--paged-margin-left)
         [margin-left-end page-area-start] 1fr
-        [margin-right-start page-area-end] var(--margin-right)
+        [margin-right-start page-area-end] var(--paged-margin-right)
         [margin-right-end];
       grid-template-rows:
-        [margin-top-start] var(--margin-top)
+        [margin-top-start] var(--paged-margin-top)
         [margin-top-end page-area-start] 1fr
-        [margin-bottom-start page-area-end] var(--margin-bottom)
+        [margin-bottom-start page-area-end] var(--paged-margin-bottom)
         [margin-bottom-end];
       grid-template-areas:
         "top-left-corner top top-right-corner"

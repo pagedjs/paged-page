@@ -78,7 +78,7 @@ paged-margin {
 
 ### Setting the margin size
 
-The paged-margin has default margins of 15mm. The margin-sizes can be influenced through four custom css properties: `--margin-top`, `--margin-right`, `--margin-bottom` & `--margin-left`.
+The paged-margin has default margins of 15mm. The margin-sizes can be influenced through four custom css properties: `--paged-margin-top`, `--paged-margin-right`, `--paged-margin-bottom` & `--paged-margin-left`.
 
 ```html
 <style>
@@ -86,10 +86,10 @@ paged-margin {
   width: 210mm;
   height: 297mm;
 
-  --margin-top: 30mm;
-  --margin-right: 10mm;
-  --margin-bottom: 10mm;
-  --margin-left: 10mm;
+  --paged-margin-top: 30mm;
+  --paged-margin-right: 10mm;
+  --paged-margin-bottom: 10mm;
+  --paged-margin-left: 10mm;
 }
 </style>
 
@@ -174,10 +174,10 @@ paged-margin {
   width: 210mm;
   height: 297mm;
 
-  --margin-top: 30mm;
-  --margin-right: 10mm;
-  --margin-left: 10mm;
-  --margin-bottom: 10mm;
+  --paged-margin-top: 30mm;
+  --paged-margin-right: 10mm;
+  --paged-margin-left: 10mm;
+  --paged-margin-bottom: 10mm;
 }
 
 paged-margin::part(margin-box) {
@@ -269,10 +269,10 @@ Note: the parts are not meant to be used to set the margin sizes (or the block s
 
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| --margin-top | length | 15mm | Size of the top margin |
-| --margin-right | length | 15mm | Size of the right margin |
-| --margin-bottom | length | 15mm | Size of the bottom margin |
-| --margin-left | length | 15mm | Size of the left margin |
+| --paged-margin-top | length | 15mm | Size of the top margin |
+| --paged-margin-right | length | 15mm | Size of the right margin |
+| --paged-margin-bottom | length | 15mm | Size of the bottom margin |
+| --paged-margin-left | length | 15mm | Size of the left margin |
 
 
 ### PagedMarginContent `<paged-margin-content>`

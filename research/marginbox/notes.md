@@ -204,3 +204,28 @@ target sides?
 - It works to attach 'part' to a slot. As long as it's on the top level. The 'downside' is that it is then on the slot. Some kind of in between element which has `display: contents`. Changing the display mode makes it break.
 
 - The part and the margin-box are not the same. The margin-box is a descendant of the div with the partname.
+
+- this refers to the element in the DOM, 
+  where this.renderRoot refers to the shadow DOM
+
+
+
+## Questions
+
+- Should we rename `<paged-margin>` to the plural `<paged-margins>`?
+- Thinking of adding a convenience attribute to the `<paged-margin-box>`
+  component to directly access the nodes assigned to its slot.
+  - Does it make sense to add this? It would shorten:
+    `marginBox.renderRoot.querySelector('slot').assignedNodes({ flatten: true })`
+    to: `marginBox.contentNodes`.
+  - How should it be called. I thought of `content` but it might be too general?
+    I tried `assignedNodes` but it overlaps with the default custom component
+    API. Also in the custom component API that is a method, where here I'd propose a
+    property Therefor settled on `contentNodes` for now.
+  - Propose a pair, both `contentNodes` and `contentElements`.
+  - Alternatively expose the 'contentSlot'. Then the call would be:
+    `marginBox.contentSlot.assignedNodes({ flatten: true })`
+- Would it make sense to use a `box` property on the `paged-margin-compontent`. So:
+  `<paged-margin-content slot="top-left">` becomes: `<paged-margin-content box="top-left">`.
+  This would perhaps be more in line with the language of the paged content standard,
+  but deviates from the custom components API which users might be familiar with.

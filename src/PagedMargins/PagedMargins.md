@@ -1,20 +1,20 @@
-# PagedMargin
+# PagedMargins
 
-The PagedMargin components facilitates rendering page-margin boxes as defined in the [W3C Paged Media Module](https://www.w3.org/TR/css-page-3/#margin-boxes). The components aim to cover the standard, and support some functionality beyond the standard.
+The PagedMargins components facilitates rendering page-margin boxes as defined in the [W3C Paged Media Module](https://www.w3.org/TR/css-page-3/#margin-boxes). The components aim to cover the standard, and support some functionality beyond the standard.
 
 ## Usage
 
-The paged-margin component renders the page-margin boxes. It is intended to be
+The paged-margins component renders the page-margin boxes. It is intended to be
 used with a paged-page component. But can also be used by itself:
 
 ```html
-<paged-margin></paged-margin>
+<paged-margins></paged-margins>
 ```
 
 
 ### Assigning content
 
-The paged-margin component renders a series of page-margin boxes. Content can be assigned through CSS, as defined in the standard, or the DOM, beyond the standard. 
+The paged-margins component renders a series of page-margin boxes. Content can be assigned through CSS, as defined in the standard, or the DOM, beyond the standard. 
 
 #### CSS
 
@@ -22,24 +22,24 @@ Content can be assigned with CSS through a combination of a `::part`-selector
 which targets the relevant `<margin-box>` and a `::before` or `::after` pseudo-selector
 which create a pseudo-element.
 
-This snippet will render a `<paged-margin>` with the text 'Hello, world!' printed
+This snippet will render a `<paged-margins>` with the text 'Hello, world!' printed
 at the top center.
 
-Note: the `<paged-margin>` doesn't have an inherent size, much a like a `<div>`. The component is expected to be used in contexts where it either receives geometry from its parent or it being set with CSS, like in the example code:
+Note: the `<paged-margins>` doesn't have an inherent size, much a like a `<div>`. The component is expected to be used in contexts where it either receives geometry from its parent or it being set with CSS, like in the example code:
 
 ```html
 <style>
-paged-margin {
+paged-margins {
   width: 210mm;
   height: 297mm;
 }
 
-paged-margin::part(top-center)::before {
+paged-margins::part(top-center)::before {
   content: "Hello, world!";
 }
 </style>
 
-<paged-margin></paged-margin>
+<paged-margins></paged-margins>
 ```
 
 #### DOM
@@ -50,39 +50,39 @@ This snippet will render a paged-margin box with the text 'Hello, world!' printe
 
 ```html
 <style>
-paged-margin {
+paged-margins {
   width: 210mm;
   height: 297mm;
 }
 </style>
 
-<paged-margin>
+<paged-margins>
   <paged-margin-content slot="top-center">Hello, world!</paged-margin-content>
-</paged-margin>
+</paged-margins>
 ```
 
 It is possible to assign any HTML-element to a marginbox using the slot attribute. This snippet will render a h1 element at the top center of the page.
 
 ```html
 <style>
-paged-margin {
+paged-margins {
   width: 210mm;
   height: 297mm;
 }
 </style>
 
-<paged-margin>
+<paged-margins>
   <h1 slot="top-center">Hello, world!</h1>
-</paged-margin>
+</paged-margins>
 ```
 
 ### Setting the margin size
 
-The paged-margin has default margins of 15mm. The margin-sizes can be influenced through four custom css properties: `--paged-margin-top`, `--paged-margin-right`, `--paged-margin-bottom` & `--paged-margin-left`.
+The paged-margins component has default margins of 15mm. The margin-sizes can be influenced through four custom css properties: `--paged-margin-top`, `--paged-margin-right`, `--paged-margin-bottom` & `--paged-margin-left`.
 
 ```html
 <style>
-paged-margin {
+paged-margins {
   width: 210mm;
   height: 297mm;
 
@@ -93,33 +93,33 @@ paged-margin {
 }
 </style>
 
-<paged-margin>
+<paged-margins>
   <paged-margin-content slot="top-center">Hello, world!</paged-margin-content>
-</paged-margin>
+</paged-margins>
 ```
 
 
 ### Styling the page-margin boxes
 
-The `paged-margin` component exposes a set of parts to style and set content on the margin-boxes. The parts for the individual page-margin boxes follow the naming scheme of the paged media spec.
+The `paged-margins` component exposes a set of parts to style and set content on the margin-boxes. The parts for the individual page-margin boxes follow the naming scheme of the paged media spec.
 
 The following sample changes the font-style and background for the bottom-center page-margin box:
 
 ```html
 <style>
-  paged-margin {
+  paged-margins {
     width: 210mm;
     height: 297mm;
   }
 
-  paged-margin::part(bottom-center) {
+  paged-margins::part(bottom-center) {
     color: white;
     background: black;
     font-weight: bold;
   }
 </style>
 
-<paged-margin></paged-margin>
+<paged-margins></paged-margins>
 ```
 
 ### Adjusting dimensions of variable size page-margin boxes
@@ -140,17 +140,17 @@ The following sample adjusts the grid of the margin-box-group-top to make the to
 
 ```html
 <style>
-  paged-margin {
+  paged-margins {
     width: 210mm;
     height: 297mm;
   }
 
-  paged-margin::part(margin-box-group-top) {
+  paged-margins::part(margin-box-group-top) {
     grid-template-columns: 0 1fr 0;
   }
 </style>
 
-<paged-margin></paged-margin>
+<paged-margins></paged-margins>
 ```
 
 ### Special parts (groups)
@@ -170,7 +170,7 @@ The sample below uses the `margin-box` part to set the background of all page-ma
 ```html
 
 <style>
-paged-margin {
+paged-margins {
   width: 210mm;
   height: 297mm;
 
@@ -180,16 +180,16 @@ paged-margin {
   --paged-margin-bottom: 10mm;
 }
 
-paged-margin::part(margin-box) {
+paged-margins::part(margin-box) {
   background: grey;
 }
 
-paged-margin::part(left) {
+paged-margins::part(left) {
   background: red;
 }
 </style>
 
-<paged-margin></paged-margin>
+<paged-margins></paged-margins>
 
 ```
 
@@ -198,7 +198,7 @@ Note: the parts are not meant to be used to set the margin sizes (or the block s
 
 ## API
 
-### PagedMargin `<paged-margin>`
+### PagedMargins `<paged-margins>`
 
 #### properties
 

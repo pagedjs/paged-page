@@ -54,7 +54,7 @@ export class PagedMarginBox extends LitElement {
 }
 
 
-export class PagedMargin extends LitElement {
+export class PagedMargins extends LitElement {
   constructor () {
     super();
   }
@@ -233,4 +233,4 @@ export class PagedMargin extends LitElement {
 
 customElements.define("paged-margin-content", PagedMarginContent);
 customElements.define("paged-margin-box", PagedMarginBox);
-customElements.define("paged-margin", PagedMargin);
+customElements.define("paged-margins", PagedMargins);

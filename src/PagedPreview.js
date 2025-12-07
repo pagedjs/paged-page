@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { PagedDocument } from "./PagedDocument.js";
 import { PagedPage } from "./PagedPage/PagedPage.js";
-import { PagedMarginBox, PagedMargin } from "./PagedMargin/PagedMargin.js";
+import { PagedMarginBox, PagedMargins } from "./PagedMargins/PagedMargins.js";
 // import { pagedjs } from 'pagedjs';
 
 export class PagedPreview extends LitElement {

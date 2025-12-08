@@ -199,6 +199,7 @@ class PagedPage extends i$1 {
     width: { type: String, reflect: true },
     height: { type: String, reflect: true },
     bleed: { type: String },
+    margin: { type: String },
     marks: { type: String },
   };
 
@@ -224,10 +225,10 @@ class PagedPage extends i$1 {
       --paged-height: 297mm;
 
       /* margins are part of the geometry */
-      --paged-margin-left: 15mm;
-      --paged-margin-right: 15mm;
-      --paged-margin-top: 15mm;
-      --paged-margin-bottom: 15mm;
+  /*    // --paged-margin-left: 15mm;
+      // --paged-margin-right: 15mm;
+      // --paged-margin-top: 15mm;
+      // --paged-margin-bottom: 15mm; */
 
       width: calc(var(--paged-bleed) + var(--paged-width) + var(--paged-bleed));
       height: calc(var(--paged-bleed) + var(--paged-height) + var(--paged-bleed));
@@ -374,6 +375,7 @@ class PagedPage extends i$1 {
     this.name = ""; // auto-filled in connectedCallback
     this.bleed = "0mm";
     this.marks = "";
+    this.margin = "";
   }
 
   /**
@@ -392,8 +394,6 @@ class PagedPage extends i$1 {
     }
 
     // validate value for width and height
-    console.log(this.width);
-    console.log(CSS.supports(this.width));
     if ((this.width && !CSS.supports("width", this.width)) || !this.width) {
       console.log("there is no width for the page, using 210mm");
       this.width = "210mm";
@@ -407,10 +407,6 @@ class PagedPage extends i$1 {
     if (!this.bleed || this.bleed == "0") {
       this.bleed = "0mm";
     }
-
-    // cropsmark
-
-    // check if marks="crop cross"
 
     // Inject the @page rules
     this.#injectPageStyles();
@@ -455,6 +451,22 @@ class PagedPage extends i$1 {
    * @private
    */
   #injectPageStyles() {
+    let marginsBlock;
+
+    // add support for margins from the component?
+    if (!this.margin || (this.margin && !CSS.supports("margin", this.margin))) {
+      console.log("arg");
+      marginsBlock = i$4`
+        --paged-margin-top: 1in;
+        --paged-margin-right: 1in;
+        --paged-margin-bottom: 1in;
+        --paged-margin-left: 1in;
+      `;
+    } else {
+      marginsBlock = this.margin ? getMargin(this.margin) : "";
+    }
+
+    // console.log(marginsBlock);
     const sheet = new CSSStyleSheet();
 
     sheet.replaceSync(`
@@ -470,6 +482,7 @@ class PagedPage extends i$1 {
         --paged-bleed: ${this.bleed};
         --paged-width: calc(var(--paged-bleed, 0mm) + ${this.width} + var(--paged-bleed, 0mm));
         --paged-height: calc(var(--paged-bleed, 0mm) + ${this.height} + var(--paged-bleed, 0mm));
+       ${marginsBlock}
       }
     `);
 
@@ -532,6 +545,45 @@ class PagedPage extends i$1 {
 }
 
 customElements.define("paged-page", PagedPage);
+
+function getMargin(string) {
+  const units = string.split(" ");
+  const margins = [];
+  switch (units.length) {
+    case 4: // top right bottom left
+      margins.push(i$4`
+        --paged-margin-top: ${r$3(units[0])};
+        --paged-margin-right: ${r$3(units[1])};
+        --paged-margin-bottom: ${r$3(units[2])};
+        --paged-margin-left: ${r$3(units[3])};
+      `);
+      break;
+    case 3: // top right bottom right
+      margins.push(i$4` 
+        --paged-margin-top: ${r$3(units[0])};
+        --paged-margin-right: ${r$3(units[1])};
+        --paged-margin-bottom: ${r$3(units[2])};
+        --paged-margin-left: ${r$3(units[1])};
+      }`);
+      break;
+    case 2: // top right top right
+      margins.push(i$4` 
+        --paged-margin-top: ${r$3(units[0])};
+        --paged-margin-right: ${r$3(units[1])};
+        --paged-margin-bottom: ${r$3(units[0])};
+        --paged-margin-left: ${r$3(units[1])};
+      });`);
+      break;
+    default: // top top top top
+      margins.push(i$4` 
+        --paged-margin-top: ${r$3(units[0])};
+        --paged-margin-right: ${r$3(units[0])};
+        --paged-margin-bottom: ${r$3(units[0])};
+        --paged-margin-left: ${r$3(units[0])};
+      };`);
+  }
+  return margins;
+}
 
 class PagedDocument extends i$1 {
   static properties = {

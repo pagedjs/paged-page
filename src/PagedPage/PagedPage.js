@@ -77,12 +77,6 @@ export class PagedPage extends LitElement {
       --paged-width: 210mm;
       --paged-height: 297mm;
 
-      /* margins are part of the geometry */
-  /*    // --paged-margin-left: 15mm;
-      // --paged-margin-right: 15mm;
-      // --paged-margin-top: 15mm;
-      // --paged-margin-bottom: 15mm; */
-
       width: calc(var(--paged-bleed) + var(--paged-width) + var(--paged-bleed));
       height: calc(var(--paged-bleed) + var(--paged-height) + var(--paged-bleed));
       overflow: hidden;

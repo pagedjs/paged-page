@@ -455,7 +455,6 @@ class PagedPage extends i$1 {
 
     // add support for margins from the component?
     if (!this.margin || (this.margin && !CSS.supports("margin", this.margin))) {
-      console.log("arg");
       marginsBlock = i$4`
         --paged-margin-top: 1in;
         --paged-margin-right: 1in;

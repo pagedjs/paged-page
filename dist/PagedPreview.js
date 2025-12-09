@@ -644,7 +644,7 @@ class PagedMargins extends i$1 {
       
       grid-template-rows:
         [margin-top-start] var(--paged-margin-top)
-        [margin-top-end] 1fr
+        [margin-top-end page-area-start] 1fr
         [margin-bottom-start page-area-end] var(--paged-margin-bottom)
         [margin-bottom-end];
     }
@@ -785,7 +785,7 @@ class PagedMargins extends i$1 {
         <paged-margin-box id="left-middle" part="margin-box left left-middle">
           <slot name="left-middle"></slot>
         </paged-margin-box>
-        <paged-margin-box id="left-bottom" part="margin-box left eft-bottom">
+        <paged-margin-box id="left-bottom" part="margin-box left left-bottom">
           <slot name="left-bottom"></slot>
         </paged-margin-box>
       </div>

@@ -1,6 +1,6 @@
 {
   "name": "@pagedjs/paged-page",
-  "version": "0.0.1d",
+  "version": "0.1.0",
   "description": "paged-page is a webcomponent that shows on screen a paginated preview of the HTML inside of it",
   "main": "paged-page",
   "type": "module",

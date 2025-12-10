@@ -15,7 +15,7 @@ Each page instance auto-generates a unique `@page <name>` rule so that print and
 
 ## Usage
 
-A `<paged-page>` represents a single page:
+A `<paged-page>` represents a single page, childnodes are inserted into the default slot and show up as page content:
 
 ```html
 <paged-page> 
@@ -24,6 +24,9 @@ A `<paged-page>` represents a single page:
 ```
 
 ### Page sizing
+
+The dimensions of the page are defined with the attributes `width`, `height` and `bleed`.
+
 ```html
 <paged-page width="148mm" height="210mm" bleed="3mm">  
     <p>A5 page with bleed.</p> 
@@ -32,13 +35,15 @@ A `<paged-page>` represents a single page:
 
 ### Custom page name
 
+The attribute `name` allows to define a named page.
 
 ```html
 <paged-page name="cover">
     <h1>Cover Page</h1> 
-</paged-page>````
+</paged-page>
+````
 
-CSS can target the page by name:
+This allows to target this page with CSS:
 
 ```css
 @page cover {   size: 210mm 297mm;   margin: 0; }`
@@ -46,8 +51,7 @@ CSS can target the page by name:
 
 ### Custom margins
 
-Override the default `<paged-margins>` by providing your own:
-
+Override the default `<paged-margins>` by providing your own and assign it to the slot `margins`:
 
 ```html
 `<paged-page>
@@ -59,13 +63,15 @@ Override the default `<paged-margins>` by providing your own:
 
 ### Page marks (crop & cross)
 
-Marks only render when bleed > 0 and marks are crop and/or cross:
+The attribute `marks` defines whether and which marks are rendered. The component supports crop and cross marks:
 
 ```html
 <paged-page bleed="3mm" marks="crop cross">   
     <p>Printing with crop & cross marks.</p> 
 </paged-page>
 ```
+
+Note: marks render only when the bleed is bigger than 0.
 
 ---
 
@@ -106,7 +112,7 @@ Marks only render when bleed > 0 and marks are crop and/or cross:
 | height | height | string | `"297mm"` | Page height. |
 | bleed | bleed | string | `"0mm"` | Bleed around the page. |
 | margin | margin | string | `""` | Shorthand margin value (`"20mm 10mm"` etc). |
-| marks | marks | string | `""` | `"crop"` and/or `"cross"`. |
+| marks | marks | string | `""` | Defines which marks are displayed. Valid values are: `"crop"`, `"cross"` or `"crop cross"`. |
 
 ---
 
@@ -123,7 +129,7 @@ Marks only render when bleed > 0 and marks are crop and/or cross:
 | Slot | Type | Default | Description |
 | --- | --- | --- | --- |
 | _(default)_ | Element | — | Main page content, placed inside the page-area. |
-| margins | Element | `<paged-margins>` | Provides custom margins; replaces default margins. |
+| margins | Element | `<paged-margins>` | Slot to insert custom margins; replaces default paged-margins component. |
 
 ---
 
@@ -181,11 +187,11 @@ When and marks are needed `bleed != "0mm"`:
 -   `"crop"` draws crop lines around the bleed box
 
 ---
-
-
 # PagedMargins
 
 The PagedMargins components facilitates rendering page-margin boxes as defined in the [W3C Paged Media Module](https://www.w3.org/TR/css-page-3/#margin-boxes). The components aim to cover the standard, and support some functionality beyond the standard.
+
+---
 
 ## Usage
 
@@ -302,6 +308,10 @@ The following sample changes the font-style and background for the bottom-center
     background: black;
     font-weight: bold;
   }
+
+  paged-margins::part(bottom-center)::before {
+    content: "Hello, world!";
+  }
 </style>
 
 <paged-margins></paged-margins>
@@ -332,6 +342,16 @@ The following sample adjusts the grid of the margin-box-group-top to make the to
 
   paged-margins::part(margin-box-group-top) {
     grid-template-columns: 0 1fr 0;
+  }
+
+  paged-margins::part(top-center) {
+    color: white;
+    background: black;
+    font-weight: bold;
+  }
+  
+  paged-margins::part(top-center)::before {
+    content: "Hello, world!";
   }
 </style>
 
@@ -380,8 +400,13 @@ paged-margins::part(left) {
 
 Note: the parts are not meant to be used to set the margin sizes (or the block size of the page-margin boxes), this might lead to unexpected results.
 
+---
 
 ## API
+
+- [PagedMargins](#pagedmargins-paged-margins)
+- [PagedMarginBox](#pagedmarginbox-paged-margin-box)
+- [PagedMarginContent](#pagedmargincontent-paged-margin-content)
 
 ### PagedMargins `<paged-margins>`
 
@@ -390,12 +415,6 @@ Note: the parts are not meant to be used to set the margin sizes (or the block s
 | Property | Attribute | Type | Default | Description |
 | -------- | --------- | ---- | ------- | ----------- |
 | marginBoxes | | { str: MarginBox \| null} \| null | | Returns a dictionary with the MarginBoxes or null. Keys are the names of the page-margin boxes. |
-
-
-#### Methods
-
-| Method | parameters | Returns | Description |
-| ------ | ---------- | ------- | ----------- |
 
 
 #### Slots
@@ -454,32 +473,38 @@ Note: the parts are not meant to be used to set the margin sizes (or the block s
 
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| --paged-margin-top | length | 15mm | Size of the top margin |
-| --paged-margin-right | length | 15mm | Size of the right margin |
-| --paged-margin-bottom | length | 15mm | Size of the bottom margin |
-| --paged-margin-left | length | 15mm | Size of the left margin |
+| \--paged-margin-top | length | 15mm | Size of the top margin |
+| \--paged-margin-right | length | 15mm | Size of the right margin |
+| \--paged-margin-bottom | length | 15mm | Size of the bottom margin |
+| \--paged-margin-left | length | 15mm | Size of the left margin |
 
-
-### PagedMarginContent `<paged-margin-content>`
-
-#### Slots
-
-| Slot | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| \<default\> | Element | - | Content |
-
+---
 
 ### PagedMarginBox `<paged-margin-box>`
+
+Component used within the PagedMargins Shadow DOM. It exposed two properties giving access to *slotted* content.
 
 #### properties
 
 | Property | Attribute | Type | Default | Description |
 | -------- | --------- | ---- | ------- | ----------- |
-| contentNodes | | Node[] \| null | | Returns an array with the nodes assigned to the slot of the page-margin box. |
-| contentElements | | Element[] \| null | | Returns an array with the elements assigned to the slot of the page-margin box. |
+| slottedNodes | | Node[] \| null | | Returns an array with the nodes assigned to the slot of the page-margin box. |
+| slottedElements | | Element[] \| null | | Returns an array with the elements assigned to the slot of the page-margin box. |
 
 
 #### Slots
 | Slot | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| \<default\> | Element | - | Content to insert in the marginbox |
+| _(default)_ | Element | - | Content to insert in the marginbox |
+
+---
+
+### PagedMarginContent `<paged-margin-content>`
+
+Component used to assign text content to a PagedMarginBox.
+
+#### Slots
+
+| Slot | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| _(default)_ | Element | - | Content |

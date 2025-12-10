@@ -2,6 +2,8 @@
 
 The PagedMargins components facilitates rendering page-margin boxes as defined in the [W3C Paged Media Module](https://www.w3.org/TR/css-page-3/#margin-boxes). The components aim to cover the standard, and support some functionality beyond the standard.
 
+---
+
 ## Usage
 
 The paged-margins component renders the page-margin boxes. It is intended to be
@@ -117,6 +119,10 @@ The following sample changes the font-style and background for the bottom-center
     background: black;
     font-weight: bold;
   }
+
+  paged-margins::part(bottom-center)::before {
+    content: "Hello, world!";
+  }
 </style>
 
 <paged-margins></paged-margins>
@@ -147,6 +153,16 @@ The following sample adjusts the grid of the margin-box-group-top to make the to
 
   paged-margins::part(margin-box-group-top) {
     grid-template-columns: 0 1fr 0;
+  }
+
+  paged-margins::part(top-center) {
+    color: white;
+    background: black;
+    font-weight: bold;
+  }
+  
+  paged-margins::part(top-center)::before {
+    content: "Hello, world!";
   }
 </style>
 
@@ -195,8 +211,13 @@ paged-margins::part(left) {
 
 Note: the parts are not meant to be used to set the margin sizes (or the block size of the page-margin boxes), this might lead to unexpected results.
 
+---
 
 ## API
+
+- [PagedMargins](#pagedmargins-paged-margins)
+- [PagedMarginBox](#pagedmarginbox-paged-margin-box)
+- [PagedMarginContent](#pagedmargincontent-paged-margin-content)
 
 ### PagedMargins `<paged-margins>`
 
@@ -205,12 +226,6 @@ Note: the parts are not meant to be used to set the margin sizes (or the block s
 | Property | Attribute | Type | Default | Description |
 | -------- | --------- | ---- | ------- | ----------- |
 | marginBoxes | | { str: MarginBox \| null} \| null | | Returns a dictionary with the MarginBoxes or null. Keys are the names of the page-margin boxes. |
-
-
-#### Methods
-
-| Method | parameters | Returns | Description |
-| ------ | ---------- | ------- | ----------- |
 
 
 #### Slots
@@ -269,32 +284,38 @@ Note: the parts are not meant to be used to set the margin sizes (or the block s
 
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| --paged-margin-top | length | 15mm | Size of the top margin |
-| --paged-margin-right | length | 15mm | Size of the right margin |
-| --paged-margin-bottom | length | 15mm | Size of the bottom margin |
-| --paged-margin-left | length | 15mm | Size of the left margin |
+| \--paged-margin-top | length | 15mm | Size of the top margin |
+| \--paged-margin-right | length | 15mm | Size of the right margin |
+| \--paged-margin-bottom | length | 15mm | Size of the bottom margin |
+| \--paged-margin-left | length | 15mm | Size of the left margin |
 
-
-### PagedMarginContent `<paged-margin-content>`
-
-#### Slots
-
-| Slot | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| \<default\> | Element | - | Content |
-
+---
 
 ### PagedMarginBox `<paged-margin-box>`
+
+Component used within the PagedMargins Shadow DOM. It exposed two properties giving access to *slotted* content.
 
 #### properties
 
 | Property | Attribute | Type | Default | Description |
 | -------- | --------- | ---- | ------- | ----------- |
-| contentNodes | | Node[] \| null | | Returns an array with the nodes assigned to the slot of the page-margin box. |
-| contentElements | | Element[] \| null | | Returns an array with the elements assigned to the slot of the page-margin box. |
+| slottedNodes | | Node[] \| null | | Returns an array with the nodes assigned to the slot of the page-margin box. |
+| slottedElements | | Element[] \| null | | Returns an array with the elements assigned to the slot of the page-margin box. |
 
 
 #### Slots
 | Slot | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| \<default\> | Element | - | Content to insert in the marginbox |
+| _(default)_ | Element | - | Content to insert in the marginbox |
+
+---
+
+### PagedMarginContent `<paged-margin-content>`
+
+Component used to assign text content to a PagedMarginBox.
+
+#### Slots
+
+| Slot | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| _(default)_ | Element | - | Content |
